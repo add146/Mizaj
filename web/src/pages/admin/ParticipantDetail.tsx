@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import api, { ParticipantResult } from '../../lib/api';
+import api, { type ParticipantResult } from '../../lib/api';
 
 export default function ParticipantDetail() {
     const navigate = useNavigate();
