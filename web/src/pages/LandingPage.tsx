@@ -60,26 +60,26 @@ export default function LandingPage() {
     return (
         <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark font-display antialiased">
             {/* Top Navigation */}
-            <header className="sticky top-0 z-50 flex w-full items-center justify-between border-b border-border-light dark:border-border-dark bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md px-6 py-4 lg:px-20">
-                <div className="flex items-center gap-3 text-primary">
+            <header className="sticky top-0 z-50 flex w-full items-center justify-between border-b border-border-light dark:border-border-dark bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md px-4 md:px-6 py-4 lg:px-20">
+                <div className="flex items-center gap-2 md:gap-3 text-primary">
                     {c('app_logo') ? (
-                        <img src={c('app_logo')} alt="Logo" className="h-10 w-10 object-contain" />
+                        <img src={c('app_logo')} alt="Logo" className="h-8 w-8 md:h-10 md:w-10 object-contain" />
                     ) : (
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                            <span className="material-symbols-outlined text-2xl">spa</span>
+                        <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <span className="material-symbols-outlined text-xl md:text-2xl">spa</span>
                         </div>
                     )}
-                    <h2 className="text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">{c('app_name') || 'BioFITRA'}</h2>
+                    <h2 className="text-lg md:text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">{c('app_name') || 'BioFITRA'}</h2>
                 </div>
                 <div className="flex items-center gap-4">
                     <a
                         href={`https://wa.me/${c('contact_whatsapp') || '628123456789'}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex h-10 items-center justify-center gap-2 rounded-lg bg-green-500 px-6 text-sm font-bold text-white shadow-sm hover:bg-green-600 transition-colors"
+                        className="flex h-9 md:h-10 items-center justify-center gap-1 md:gap-2 rounded-lg bg-green-500 px-3 md:px-6 text-xs md:text-sm font-bold text-white shadow-sm hover:bg-green-600 transition-colors"
                     >
-                        <span className="material-symbols-outlined text-lg">chat</span>
-                        Konsultasi
+                        <span className="material-symbols-outlined text-base md:text-lg">chat</span>
+                        <span className="hidden xs:inline">Konsultasi</span>
                     </a>
                 </div>
             </header>

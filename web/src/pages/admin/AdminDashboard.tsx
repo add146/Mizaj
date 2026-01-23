@@ -27,6 +27,7 @@ export default function AdminDashboard() {
     const [participants, setParticipants] = useState<Participant[]>([]);
     const [stats, setStats] = useState<Stats>({ total: 0, today: 0, completionRate: 0, pendingReview: 0 });
     const [loading, setLoading] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
         loadData();
@@ -100,8 +101,17 @@ export default function AdminDashboard() {
 
     return (
         <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark font-display">
+            {/* Mobile Overlay */}
+            {sidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+
             {/* Sidebar */}
-            <aside className="w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex flex-col h-full">
+            <aside className={`fixed lg:static w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex flex-col h-full z-50 transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+                }`}>
                 {/* Logo */}
                 <div className="flex items-center gap-3 px-6 py-5 border-b border-border-light dark:border-border-dark">
                     <span className="material-symbols-outlined text-primary text-3xl">spa</span>
@@ -120,6 +130,7 @@ export default function AdminDashboard() {
                                 onClick={() => {
                                     setActiveMenu(item.id);
                                     navigate(item.path);
+                                    setSidebarOpen(false);
                                 }}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-left w-full ${activeMenu === item.id || location.pathname === item.path
                                     ? 'bg-primary/10 text-primary font-medium'
@@ -157,33 +168,42 @@ export default function AdminDashboard() {
             {/* Main Content */}
             <main className="flex-1 h-full overflow-y-auto">
                 {/* Header */}
-                <header className="sticky top-0 z-40 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-border-light dark:border-border-dark px-8 py-4">
+                <header className="sticky top-0 z-40 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-border-light dark:border-border-dark px-4 md:px-8 py-4">
                     <div className="flex justify-between items-center">
-                        <div>
-                            <h1 className="text-2xl font-bold text-text-main-light dark:text-text-main-dark">Dashboard</h1>
-                            <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">Selamat datang kembali, Administrator!</p>
-                        </div>
                         <div className="flex items-center gap-4">
+                            {/* Mobile Menu Button */}
+                            <button
+                                onClick={() => setSidebarOpen(!sidebarOpen)}
+                                className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                            >
+                                <span className="material-symbols-outlined text-text-secondary-light">menu</span>
+                            </button>
+                            <div>
+                                <h1 className="text-xl md:text-2xl font-bold text-text-main-light dark:text-text-main-dark">Dashboard</h1>
+                                <p className="hidden sm:block text-sm text-text-secondary-light dark:text-text-secondary-dark">Selamat datang kembali, Administrator!</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2 md:gap-4">
                             <button
                                 onClick={() => navigate('/')}
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg text-text-secondary-light hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-lg text-text-secondary-light hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                                 title="Lihat Website"
                             >
                                 <span className="material-symbols-outlined">visibility</span>
-                                <span className="text-sm">Lihat Website</span>
+                                <span className="hidden md:inline text-sm">Lihat Website</span>
                             </button>
                             <button
                                 onClick={() => navigate('/admin/questions/new')}
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-md shadow-primary/20"
+                                className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-md shadow-primary/20"
                             >
                                 <span className="material-symbols-outlined text-xl">add</span>
-                                Tambah Soal
+                                <span className="hidden sm:inline">Tambah Soal</span>
                             </button>
                         </div>
                     </div>
                 </header>
 
-                <div className="p-8">
+                <div className="p-4 md:p-8">
                     {/* Stats Grid */}
                     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         {statCards.map((stat, index) => (
@@ -230,7 +250,7 @@ export default function AdminDashboard() {
                                     <div
                                         key={participant.id}
                                         onClick={() => navigate(`/admin/participants/${participant.id}`)}
-                                        className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+                                        className="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 md:px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer gap-3 sm:gap-4"
                                     >
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
@@ -243,8 +263,8 @@ export default function AdminDashboard() {
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-4">
-                                            <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                        <div className="flex items-center gap-2 sm:gap-4 ml-14 sm:ml-0">
+                                            <span className="text-xs sm:text-sm text-text-secondary-light dark:text-text-secondary-dark">
                                                 {formatDate(participant.created_at)}
                                             </span>
                                             {participant.needs_interview ? (
