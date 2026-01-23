@@ -61,7 +61,7 @@ export default function LandingPage() {
         <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark font-display antialiased">
             {/* Top Navigation */}
             <header className="sticky top-0 z-50 flex w-full items-center justify-between border-b border-border-light dark:border-border-dark bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md px-4 md:px-6 py-4 lg:px-20">
-                <div className="flex items-center gap-2 md:gap-3 text-primary">
+                <button onClick={() => navigate('/')} className="flex items-center gap-2 md:gap-3 text-primary hover:opacity-80 transition-opacity">
                     {c('app_logo') ? (
                         <img src={c('app_logo')} alt="Logo" className="h-8 w-8 md:h-10 md:w-10 object-contain" />
                     ) : (
@@ -70,7 +70,7 @@ export default function LandingPage() {
                         </div>
                     )}
                     <h2 className="text-lg md:text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">{c('app_name') || 'BioFITRA'}</h2>
-                </div>
+                </button>
                 <div className="flex items-center gap-4">
                     <a
                         href={`https://wa.me/${c('contact_whatsapp') || '628123456789'}`}

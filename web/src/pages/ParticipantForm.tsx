@@ -47,7 +47,7 @@ export default function ParticipantForm() {
             <nav className="w-full bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark relative z-10">
                 <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-center h-16">
-                        <div className="flex items-center gap-3 text-primary">
+                        <button onClick={() => navigate('/')} className="flex items-center gap-3 text-primary hover:opacity-80 transition-opacity">
                             {appLogo ? (
                                 <img src={appLogo} alt="Logo" className="h-8 w-8 object-contain" />
                             ) : (
@@ -56,7 +56,7 @@ export default function ParticipantForm() {
                                 </div>
                             )}
                             <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">{appName}</h2>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </nav>
