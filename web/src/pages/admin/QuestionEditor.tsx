@@ -7,7 +7,7 @@ export default function QuestionEditor() {
     const { id } = useParams<{ id: string }>();
     const isNewQuestion = id === 'new';
 
-    const [loading, setLoading] = useState(!isNewQuestion);
+    const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [questionText, setQuestionText] = useState('');
     const [isActive, setIsActive] = useState(true);
