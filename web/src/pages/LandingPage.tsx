@@ -67,11 +67,6 @@ export default function LandingPage() {
                     </div>
                     <h2 className="text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">BioFITRA</h2>
                 </div>
-                <div className="hidden md:flex flex-1 justify-center gap-8">
-                    <a className="text-sm font-medium hover:text-primary transition-colors" href="#">Home</a>
-                    <a className="text-sm font-medium hover:text-primary transition-colors" href="#">Tentang Mizaj</a>
-                    <a className="text-sm font-medium hover:text-primary transition-colors" href="#">Kontak</a>
-                </div>
                 <div className="flex items-center gap-4">
                     <a
                         href={`https://wa.me/${c('contact_whatsapp') || '628123456789'}`}
