@@ -248,23 +248,21 @@ export default function ResultPage() {
                         <span className="material-symbols-outlined">share</span>
                         Bagikan Hasil
                     </button>
-                    {contact && (
-                        <a
-                            href={`https://wa.me/${contact}?text=${encodeURIComponent(
-                                `Halo, saya ingin konsultasi mengenai hasil Mizaj saya.\n\n` +
-                                `Nama: ${participant.name}\n` +
-                                `Usia: ${participant.age} tahun\n` +
-                                `Tipe Mizaj: ${mizaj_result.title} (${mizaj_result.mizaj_type})\n\n` +
-                                `Link Hasil: ${window.location.origin}/result/${participant.id}`
-                            )}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center gap-2 px-8 py-4 rounded-xl bg-green-500 text-white font-bold shadow-lg shadow-green-500/30 hover:bg-green-600 transition-all"
-                        >
-                            <span className="material-symbols-outlined">chat</span>
-                            Konsultasi
-                        </a>
-                    )}
+                    <a
+                        href={`https://wa.me/${contact || '628123456789'}?text=${encodeURIComponent(
+                            `Halo, saya ingin konsultasi mengenai hasil Mizaj saya.\n\n` +
+                            `Nama: ${participant.name}\n` +
+                            `Usia: ${participant.age} tahun\n` +
+                            `Tipe Mizaj: ${mizaj_result.title} (${mizaj_result.mizaj_type})\n\n` +
+                            `Link Hasil: ${window.location.origin}/result/${participant.id}`
+                        )}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 px-8 py-4 rounded-xl bg-green-500 text-white font-bold shadow-lg shadow-green-500/30 hover:bg-green-600 transition-all"
+                    >
+                        <span className="material-symbols-outlined">chat</span>
+                        Konsultasi
+                    </a>
                 </div>
 
                 {/* Disclaimer */}
