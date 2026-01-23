@@ -110,6 +110,10 @@ class ApiClient {
         return this.request<Question[]>('/api/questions');
     }
 
+    async getQuestion(id: string): Promise<Question> {
+        return this.request<Question>(`/api/questions/${id}`);
+    }
+
     async submitQuiz(submission: QuizSubmission): Promise<ParticipantResult> {
         return this.request<ParticipantResult>('/api/quiz/submit', {
             method: 'POST',

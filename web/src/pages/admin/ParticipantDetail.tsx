@@ -1,61 +1,110 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import api from '../../lib/api';
+import api, { ParticipantResult } from '../../lib/api';
 
 export default function ParticipantDetail() {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
-    const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [data, setData] = useState<ParticipantResult | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (id) loadData();
+        if (id) {
+            loadParticipant(id);
+        }
     }, [id]);
 
-    const loadData = async () => {
+    const loadParticipant = async (participantId: string) => {
         try {
-            const result = await api.getParticipantResult(id!);
+            const result = await api.getParticipantResult(participantId);
             setData(result);
         } catch (error) {
             console.error('Failed to load participant:', error);
+            setError('Gagal memuat data peserta');
         } finally {
             setLoading(false);
         }
     };
 
-    const getMizajLabel = (type: string) => {
-        const labels: Record<string, string> = {
-            panas_lembab: 'Panas Lembab',
-            dingin_lembab: 'Dingin Lembab',
-            panas_kering: 'Panas Kering',
-            dingin_kering: 'Dingin Kering'
+    const getMizajIcon = (type: string) => {
+        const icons: Record<string, string> = {
+            panas_lembab: 'wb_sunny',
+            dingin_lembab: 'water_drop',
+            panas_kering: 'local_fire_department',
+            dingin_kering: 'ac_unit'
         };
-        return labels[type] || type;
+        return icons[type] || 'psychology';
+    };
+
+    const getMizajColor = (type: string) => {
+        const colors: Record<string, string> = {
+            panas_lembab: 'bg-orange-100 text-orange-600',
+            dingin_lembab: 'bg-blue-100 text-blue-600',
+            panas_kering: 'bg-red-100 text-red-600',
+            dingin_kering: 'bg-gray-100 text-gray-600'
+        };
+        return colors[type] || 'bg-gray-100 text-gray-600';
     };
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
-                <span className="material-symbols-outlined animate-spin text-4xl text-primary">progress_activity</span>
+            <div className="min-h-screen bg-background-light dark:bg-background-dark font-display flex items-center justify-center">
+                <div className="text-center">
+                    <span className="material-symbols-outlined animate-spin text-4xl text-primary">progress_activity</span>
+                    <p className="mt-4 text-text-secondary-light">Memuat data peserta...</p>
+                </div>
             </div>
         );
     }
 
-    if (!data) {
+    if (error || !data) {
         return (
-            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
-                <p className="text-text-secondary-light">Peserta tidak ditemukan</p>
+            <div className="min-h-screen bg-background-light dark:bg-background-dark font-display">
+                <header className="sticky top-0 z-50 bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark">
+                    <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-4">
+                        <button
+                            onClick={() => navigate('/admin/participants')}
+                            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        >
+                            <span className="material-symbols-outlined text-text-secondary-light">arrow_back</span>
+                        </button>
+                        <h1 className="text-xl font-bold text-text-main-light dark:text-text-main-dark">Detail Peserta</h1>
+                    </div>
+                </header>
+                <main className="max-w-4xl mx-auto px-6 py-8">
+                    <div className="text-center py-12 bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark">
+                        <span className="material-symbols-outlined text-6xl text-red-300">error</span>
+                        <h3 className="mt-4 text-lg font-bold text-text-main-light dark:text-text-main-dark">
+                            {error || 'Data tidak ditemukan'}
+                        </h3>
+                        <p className="mt-2 text-text-secondary-light">Peserta dengan ID ini tidak ditemukan.</p>
+                        <button
+                            onClick={() => navigate('/admin/participants')}
+                            className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-medium hover:bg-primary/90"
+                        >
+                            Kembali ke Daftar Peserta
+                        </button>
+                    </div>
+                </main>
             </div>
         );
     }
 
-    const { participant, mizaj_result, answers } = data;
+    const { participant, mizaj_result } = data;
+    const formattedDate = new Date(participant.created_at * 1000).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 
     return (
         <div className="min-h-screen bg-background-light dark:bg-background-dark font-display">
             {/* Header */}
             <header className="sticky top-0 z-50 bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark">
-                <div className="max-w-4xl mx-auto px-6 py-4 flex items-center gap-4">
+                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-4">
                     <button
                         onClick={() => navigate('/admin/participants')}
                         className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -64,7 +113,7 @@ export default function ParticipantDetail() {
                     </button>
                     <div>
                         <h1 className="text-xl font-bold text-text-main-light dark:text-text-main-dark">Detail Peserta</h1>
-                        <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">{participant.name}</p>
+                        <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">Informasi lengkap dan hasil screening</p>
                     </div>
                 </div>
             </header>
@@ -72,74 +121,115 @@ export default function ParticipantDetail() {
             <main className="max-w-4xl mx-auto px-6 py-8 space-y-6">
                 {/* Participant Info */}
                 <div className="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-6">
-                    <div className="flex items-center gap-6">
-                        <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-primary text-3xl font-bold">
-                            {participant.name.charAt(0).toUpperCase()}
+                    <h2 className="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-4 flex items-center gap-2">
+                        <span className="material-symbols-outlined text-primary">person</span>
+                        Data Peserta
+                    </h2>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <p className="text-sm text-text-secondary-light mb-1">Nama Lengkap</p>
+                            <p className="font-medium text-text-main-light dark:text-text-main-dark">{participant.name}</p>
                         </div>
-                        <div className="flex-1">
-                            <h2 className="text-2xl font-bold text-text-main-light dark:text-text-main-dark">{participant.name}</h2>
-                            <div className="flex items-center gap-4 mt-2 text-text-secondary-light">
-                                <span>{participant.age} tahun</span>
-                                <span>•</span>
-                                <span>{participant.gender === 'male' ? 'Laki-laki' : 'Perempuan'}</span>
-                            </div>
+                        <div>
+                            <p className="text-sm text-text-secondary-light mb-1">Usia</p>
+                            <p className="font-medium text-text-main-light dark:text-text-main-dark">{participant.age} tahun</p>
                         </div>
-                        <div className="text-right">
-                            {participant.needs_interview ? (
-                                <span className="px-4 py-2 rounded-full bg-orange-100 text-orange-700 font-medium">Perlu Review</span>
-                            ) : (
-                                <span className="px-4 py-2 rounded-full bg-green-100 text-green-700 font-medium">Selesai</span>
-                            )}
+                        <div>
+                            <p className="text-sm text-text-secondary-light mb-1">Jenis Kelamin</p>
+                            <p className="font-medium text-text-main-light dark:text-text-main-dark">
+                                {participant.gender === 'male' ? 'Laki-laki' : 'Perempuan'}
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-text-secondary-light mb-1">Waktu Screening</p>
+                            <p className="font-medium text-text-main-light dark:text-text-main-dark">{formattedDate}</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Mizaj Result */}
-                <div className="bg-gradient-to-br from-primary/5 to-green-500/5 rounded-xl border border-primary/20 p-6">
-                    <h3 className="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-4">Hasil Screening</h3>
-                    <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center">
-                            <span className="material-symbols-outlined text-primary text-3xl">psychology</span>
+                <div className="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-6">
+                    <h2 className="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-4 flex items-center gap-2">
+                        <span className="material-symbols-outlined text-primary">psychology</span>
+                        Hasil Mizaj
+                    </h2>
+                    <div className="flex items-center gap-4 mb-4">
+                        <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${getMizajColor(participant.result_mizaj_type)}`}>
+                            <span className="material-symbols-outlined text-3xl">{getMizajIcon(participant.result_mizaj_type)}</span>
                         </div>
                         <div>
-                            <p className="text-2xl font-bold text-primary">{getMizajLabel(participant.result_mizaj_type)}</p>
-                            <p className="text-text-secondary-light">{mizaj_result?.description || 'Tidak ada deskripsi'}</p>
+                            <h3 className="text-2xl font-bold text-text-main-light dark:text-text-main-dark">{mizaj_result.title}</h3>
+                            <p className="text-text-secondary-light">{mizaj_result.mizaj_type}</p>
                         </div>
                     </div>
-                </div>
+                    <p className="text-text-secondary-light mb-4">{mizaj_result.description}</p>
 
-                {/* Answer Counts */}
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-6">
-                    <h3 className="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-4">Distribusi Jawaban</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {Object.entries(participant.answer_counts || {}).map(([type, count]) => (
-                            <div key={type} className="text-center p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                                <p className="text-2xl font-bold text-text-main-light dark:text-text-main-dark">{count as number}</p>
-                                <p className="text-sm text-text-secondary-light">{getMizajLabel(type)}</p>
+                    {participant.needs_interview && (
+                        <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                            <div className="flex items-center gap-2 text-yellow-700 dark:text-yellow-400">
+                                <span className="material-symbols-outlined">warning</span>
+                                <p className="font-medium">Memerlukan Wawancara Lanjutan</p>
                             </div>
-                        ))}
+                            <p className="text-sm text-yellow-600 dark:text-yellow-500 mt-1">
+                                Peserta ini memiliki jawaban yang seimbang dan memerlukan wawancara untuk menentukan tipe Mizaj yang lebih akurat.
+                            </p>
+                        </div>
+                    )}
+                </div>
+
+                {/* Answer Distribution */}
+                <div className="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-6">
+                    <h2 className="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-4 flex items-center gap-2">
+                        <span className="material-symbols-outlined text-primary">bar_chart</span>
+                        Distribusi Jawaban
+                    </h2>
+                    <div className="space-y-3">
+                        {Object.entries(participant.answer_counts).map(([type, count]) => {
+                            const total = Object.values(participant.answer_counts).reduce((a: number, b: number) => a + b, 0);
+                            const percentage = Math.round((count / total) * 100);
+
+                            return (
+                                <div key={type}>
+                                    <div className="flex items-center justify-between mb-1">
+                                        <span className="text-sm font-medium text-text-main-light dark:text-text-main-dark">
+                                            {type === 'panas_lembab' ? 'Panas Lembab' :
+                                                type === 'dingin_lembab' ? 'Dingin Lembab' :
+                                                    type === 'panas_kering' ? 'Panas Kering' :
+                                                        'Dingin Kering'}
+                                        </span>
+                                        <span className="text-sm text-text-secondary-light">{count} jawaban ({percentage}%)</span>
+                                    </div>
+                                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div
+                                            className={`h-full ${getMizajColor(type).split(' ')[0]}`}
+                                            style={{ width: `${percentage}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 
-                {/* Answers Detail */}
-                {answers && answers.length > 0 && (
+                {/* Recommendations */}
+                {(mizaj_result.dietary_recommendations || mizaj_result.lifestyle_recommendations) && (
                     <div className="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-6">
-                        <h3 className="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-4">Detail Jawaban</h3>
-                        <div className="space-y-3">
-                            {answers.map((answer: any, index: number) => (
-                                <div key={answer.id} className="flex items-center gap-4 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                                    <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                                        {index + 1}
-                                    </span>
-                                    <div className="flex-1">
-                                        <p className="text-sm text-text-main-light dark:text-text-main-dark">{answer.question_text}</p>
-                                    </div>
-                                    <span className="px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 text-sm">
-                                        {getMizajLabel(answer.selected_mizaj_type)}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
+                        <h2 className="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-4 flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary">recommend</span>
+                            Rekomendasi
+                        </h2>
+                        {mizaj_result.dietary_recommendations && (
+                            <div className="mb-4">
+                                <h3 className="font-medium text-text-main-light dark:text-text-main-dark mb-2">Pola Makan</h3>
+                                <p className="text-text-secondary-light">{mizaj_result.dietary_recommendations}</p>
+                            </div>
+                        )}
+                        {mizaj_result.lifestyle_recommendations && (
+                            <div>
+                                <h3 className="font-medium text-text-main-light dark:text-text-main-dark mb-2">Gaya Hidup</h3>
+                                <p className="text-text-secondary-light">{mizaj_result.lifestyle_recommendations}</p>
+                            </div>
+                        )}
                     </div>
                 )}
             </main>
