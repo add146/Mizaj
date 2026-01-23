@@ -73,18 +73,15 @@ export default function LandingPage() {
                     <a className="text-sm font-medium hover:text-primary transition-colors" href="#">Kontak</a>
                 </div>
                 <div className="flex items-center gap-4">
-                    <button
-                        onClick={() => navigate('/admin/login')}
-                        className="hidden md:flex h-10 items-center justify-center rounded-lg px-6 text-sm font-bold text-primary hover:bg-primary/10 transition-colors"
+                    <a
+                        href={`https://wa.me/${c('contact_whatsapp') || '628123456789'}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex h-10 items-center justify-center gap-2 rounded-lg bg-green-500 px-6 text-sm font-bold text-white shadow-sm hover:bg-green-600 transition-colors"
                     >
-                        Masuk
-                    </button>
-                    <button
-                        onClick={() => navigate('/screening')}
-                        className="flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary/90 transition-colors"
-                    >
-                        <span className="truncate">Daftar</span>
-                    </button>
+                        <span className="material-symbols-outlined text-lg">chat</span>
+                        Konsultasi
+                    </a>
                 </div>
             </header>
 
