@@ -62,7 +62,7 @@ app.post('/submit', async (c) => {
     // Save individual answers
     for (const answer of answers) {
         await c.env.DB.prepare(`
-      INSERT INTO answers (id, participant_id, question_id, selected_mizaj_type)
+      INSERT INTO answers (id, participant_id, question_id, selected_mizaj)
       VALUES (?, ?, ?, ?)
     `).bind(crypto.randomUUID(), participantId, answer.question_id, answer.selected_mizaj).run();
     }
