@@ -163,6 +163,18 @@ class ApiClient {
             method: 'DELETE',
         });
     }
+
+    // Site Content
+    async getSiteContent(): Promise<Record<string, string>> {
+        return this.request<Record<string, string>>('/api/content');
+    }
+
+    async updateSiteContent(items: { key: string; value: string; type?: string }[]): Promise<any> {
+        return this.request('/api/content', {
+            method: 'PUT',
+            body: JSON.stringify({ items }),
+        });
+    }
 }
 
 export const api = new ApiClient(API_BASE_URL);

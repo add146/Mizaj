@@ -63,6 +63,7 @@ export default function AdminDashboard() {
 
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: 'dashboard', path: '/admin' },
+        { id: 'landing', label: 'Halaman Utama', icon: 'web', path: '/admin/landing' },
         { id: 'questions', label: 'Kelola Soal', icon: 'quiz', path: '/admin/questions' },
         { id: 'participants', label: 'Peserta', icon: 'groups', path: '/admin/participants' },
         { id: 'mizaj', label: 'Konten Mizaj', icon: 'article', path: '/admin/mizaj' },
@@ -121,8 +122,8 @@ export default function AdminDashboard() {
                                     navigate(item.path);
                                 }}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-left w-full ${activeMenu === item.id || location.pathname === item.path
-                                        ? 'bg-primary/10 text-primary font-medium'
-                                        : 'text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    ? 'bg-primary/10 text-primary font-medium'
+                                    : 'text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                             >
                                 <span className="material-symbols-outlined">{item.icon}</span>

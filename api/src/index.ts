@@ -5,6 +5,7 @@ import quiz from './routes/quiz';
 import participants from './routes/participants';
 import auth from './routes/auth';
 import mizaj from './routes/mizaj';
+import content from './routes/content';
 
 type Bindings = {
 	DB: D1Database;
@@ -28,5 +29,6 @@ app.route('/api/quiz', quiz);
 app.route('/api/participants', participants);
 app.route('/api/auth', auth);
 app.route('/api/mizaj', mizaj);
+app.route('/api/content', content);
 
 export default app;

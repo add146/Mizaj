@@ -75,3 +75,13 @@ CREATE INDEX IF NOT EXISTS idx_options_question ON options(question_id);
 CREATE INDEX IF NOT EXISTS idx_participants_created ON participants(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_answers_participant ON answers(participant_id);
 CREATE INDEX IF NOT EXISTS idx_answers_question ON answers(question_id);
+
+-- Site content for editable landing page
+CREATE TABLE IF NOT EXISTS site_content (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  type TEXT DEFAULT 'text',
+  updated_at INTEGER DEFAULT (unixepoch())
+);
+
+CREATE INDEX IF NOT EXISTS idx_site_content_type ON site_content(type);
