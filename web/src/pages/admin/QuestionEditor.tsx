@@ -5,7 +5,8 @@ import api from '../../lib/api';
 export default function QuestionEditor() {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
-    const isNewQuestion = id === 'new';
+    // Check if creating new question: id is undefined (from /new route) OR id equals 'new'
+    const isNewQuestion = !id || id === 'new';
 
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
