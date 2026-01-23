@@ -68,6 +68,13 @@ const SECTIONS: ContentSection[] = [
             { key: 'footer_copyright', label: 'Teks Copyright', type: 'text' },
         ]
     },
+    {
+        title: 'Pengaturan Kontak',
+        fields: [
+            { key: 'contact_whatsapp', label: 'Nomor WhatsApp (format: 628...)', type: 'text' },
+            { key: 'contact_wa_message', label: 'Template Pesan WA', type: 'textarea' },
+        ]
+    },
 ];
 
 export default function LandingEditor() {

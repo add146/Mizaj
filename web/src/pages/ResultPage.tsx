@@ -8,8 +8,10 @@ export default function ResultPage() {
     const location = useLocation();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ParticipantResult | null>(null);
+    const [contact, setContact] = useState<string>('');
 
     useEffect(() => {
+        loadContact();
         // Check if result was passed via navigation state
         if (location.state?.result) {
             setData(location.state.result);
@@ -20,6 +22,17 @@ export default function ResultPage() {
             navigate('/');
         }
     }, [id]);
+
+    const loadContact = async () => {
+        try {
+            const siteContent = await api.getSiteContent();
+            if (siteContent.contact_whatsapp) {
+                setContact(siteContent.contact_whatsapp);
+            }
+        } catch (error) {
+            console.error('Failed to load contact:', error);
+        }
+    };
 
     const loadResult = async (participantId: string) => {
         try {
@@ -235,6 +248,23 @@ export default function ResultPage() {
                         <span className="material-symbols-outlined">share</span>
                         Bagikan Hasil
                     </button>
+                    {contact && (
+                        <a
+                            href={`https://wa.me/${contact}?text=${encodeURIComponent(
+                                `Halo, saya ingin konsultasi mengenai hasil Mizaj saya.\n\n` +
+                                `Nama: ${participant.name}\n` +
+                                `Usia: ${participant.age} tahun\n` +
+                                `Tipe Mizaj: ${mizaj_result.title} (${mizaj_result.mizaj_type})\n\n` +
+                                `Link Hasil: ${window.location.origin}/result/${participant.id}`
+                            )}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-2 px-8 py-4 rounded-xl bg-green-500 text-white font-bold shadow-lg shadow-green-500/30 hover:bg-green-600 transition-all"
+                        >
+                            <span className="material-symbols-outlined">chat</span>
+                            Konsultasi
+                        </a>
+                    )}
                 </div>
 
                 {/* Disclaimer */}
