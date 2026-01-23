@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../lib/api';
 
 export default function ParticipantForm() {
     const navigate = useNavigate();
@@ -9,6 +10,22 @@ export default function ParticipantForm() {
         gender: 'male',
         contact: ''
     });
+    const [appLogo, setAppLogo] = useState<string>('');
+    const [appName, setAppName] = useState<string>('BioFITRA');
+
+    useEffect(() => {
+        loadSettings();
+    }, []);
+
+    const loadSettings = async () => {
+        try {
+            const data = await api.getSiteContent();
+            if (data.app_logo) setAppLogo(data.app_logo);
+            if (data.app_name) setAppName(data.app_name);
+        } catch (error) {
+            console.log('Using default settings');
+        }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,17 +46,16 @@ export default function ParticipantForm() {
             {/* Top Navigation */}
             <nav className="w-full bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark relative z-10">
                 <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 text-primary flex items-center justify-center">
-                                <span className="material-symbols-outlined text-3xl">spa</span>
-                            </div>
-                            <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">Mizaj Health</h2>
-                        </div>
-                        <div className="hidden md:flex items-center gap-8">
-                            <button onClick={() => navigate('/')} className="text-sm font-medium hover:text-primary transition-colors">Home</button>
-                            <a className="text-sm font-medium hover:text-primary transition-colors" href="#">About</a>
-                            <a className="text-sm font-medium hover:text-primary transition-colors" href="#">Contact</a>
+                    <div className="flex items-center justify-center h-16">
+                        <div className="flex items-center gap-3 text-primary">
+                            {appLogo ? (
+                                <img src={appLogo} alt="Logo" className="h-8 w-8 object-contain" />
+                            ) : (
+                                <div className="w-8 h-8 flex items-center justify-center">
+                                    <span className="material-symbols-outlined text-3xl">spa</span>
+                                </div>
+                            )}
+                            <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">{appName}</h2>
                         </div>
                     </div>
                 </div>
