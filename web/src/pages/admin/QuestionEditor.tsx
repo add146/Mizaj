@@ -30,9 +30,10 @@ export default function QuestionEditor() {
         if (!isNewQuestion && id) {
             loadQuestion(id);
         }
-    }, [id, isNewQuestion]);
+    }, [id]);
 
     const loadQuestion = async (questionId: string) => {
+        setLoading(true);
         try {
             const data = await api.getQuestion(questionId);
             setQuestionText(data.question_text);
