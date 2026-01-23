@@ -129,6 +129,12 @@ class ApiClient {
         return this.request<any[]>('/api/participants');
     }
 
+    async deleteParticipant(id: string): Promise<any> {
+        return this.request(`/api/participants/${id}`, {
+            method: 'DELETE',
+        });
+    }
+
     async getMizajTypes(): Promise<MizajResult[]> {
         return this.request<MizajResult[]>('/api/mizaj');
     }

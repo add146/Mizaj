@@ -33,6 +33,22 @@ export default function ParticipantList() {
         }
     };
 
+    const handleDelete = async (e: React.MouseEvent, participantId: string, participantName: string) => {
+        e.stopPropagation(); // Prevent row click
+        if (!confirm(`Apakah Anda yakin ingin menghapus peserta "${participantName}"?`)) {
+            return;
+        }
+
+        try {
+            await api.deleteParticipant(participantId);
+            // Reload participants after delete
+            loadParticipants();
+        } catch (error) {
+            console.error('Failed to delete participant:', error);
+            alert('Gagal menghapus peserta');
+        }
+    };
+
     const filteredParticipants = participants.filter(p => {
         if (filter === 'all') return true;
         if (filter === 'pending') return p.needs_interview;
@@ -123,6 +139,7 @@ export default function ParticipantList() {
                                     <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light">Tipe Mizaj</th>
                                     <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light">Tanggal</th>
                                     <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light">Status</th>
+                                    <th className="text-center px-6 py-4 text-sm font-medium text-text-secondary-light">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border-light dark:divide-border-dark">
@@ -153,6 +170,15 @@ export default function ParticipantList() {
                                             ) : (
                                                 <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">Selesai</span>
                                             )}
+                                        </td>
+                                        <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                                            <button
+                                                onClick={(e) => handleDelete(e, participant.id, participant.name)}
+                                                className="p-2 rounded-lg hover:bg-red-100 text-red-600 hover:text-red-700 transition-colors"
+                                                title="Hapus peserta"
+                                            >
+                                                <span className="material-symbols-outlined text-xl">delete</span>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
