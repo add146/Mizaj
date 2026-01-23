@@ -1,7 +1,53 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../lib/api';
+
+// Default content values
+const DEFAULTS: Record<string, string> = {
+    hero_badge: 'Based on Traditional Tibb Nabawi',
+    hero_title: 'Kenali Karakter Tubuh Anda Sesuai Fitrah Sejak Lahir',
+    hero_subtitle: 'Temukan keseimbangan kesehatan Anda melalui metode screening Mizaj tradisional yang akurat dan terpercaya. Pahami diri Anda untuk hidup lebih sehat.',
+    hero_image: '/hero_nature_herbs_1769161155289.png',
+    hero_cta: 'MULAI SCREENING',
+    stat_1_value: '4+',
+    stat_1_label: 'Tipe Mizaj Utama',
+    stat_2_value: '10k+',
+    stat_2_label: 'Pengguna Terdaftar',
+    stat_3_value: '95%',
+    stat_3_label: 'Akurasi Screening',
+    mizaj_panas_lembab_image: '/panas_lembab_tropical_1769161184075.png',
+    mizaj_panas_lembab_desc: 'Karakter sanguinis yang energik, ceria, dan sosial. Cenderung memiliki tubuh yang hangat dan kulit kemerahan.',
+    mizaj_dingin_lembab_image: '/dingin_lembab_misty_1769161212298.png',
+    mizaj_dingin_lembab_desc: 'Karakter phlegmatis yang tenang, sabar, dan santai. Cenderung memiliki kulit pucat dan metabolisme lambat.',
+    mizaj_panas_kering_image: '/panas_kering_desert_1769161245061.png',
+    mizaj_panas_kering_desc: 'Karakter koleris yang tegas, pemimpin, dan berambisi. Cenderung memiliki tubuh kurus berotot dan aktif.',
+    mizaj_dingin_kering_image: '/dingin_kering_mountain_1769161269707.png',
+    mizaj_dingin_kering_desc: 'Karakter melankolis yang pemikir, analitis, dan detail. Cenderung introspektif dan menyukai kesendirian.',
+    cta_title: 'Siap Mengetahui Keseimbangan Tubuh Anda?',
+    cta_subtitle: 'Jangan biarkan ketidakseimbangan tubuh mengganggu aktivitas Anda. Mulai screening sekarang dan dapatkan solusi kesehatan yang tepat.',
+    cta_button: 'MULAI SCREENING',
+};
 
 export default function LandingPage() {
     const navigate = useNavigate();
+    const [content, setContent] = useState<Record<string, string>>(DEFAULTS);
+
+    useEffect(() => {
+        loadContent();
+    }, []);
+
+    const loadContent = async () => {
+        try {
+            const data = await api.getSiteContent();
+            // Merge with defaults - API values take priority
+            setContent(prev => ({ ...prev, ...data }));
+        } catch (error) {
+            console.log('Using default content');
+        }
+    };
+
+    // Helper to get content with fallback
+    const c = (key: string) => content[key] || DEFAULTS[key] || '';
 
     return (
         <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark font-display antialiased">
@@ -41,20 +87,20 @@ export default function LandingPage() {
                     <div className="flex flex-1 flex-col gap-6 lg:max-w-xl">
                         <div className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
                             <span className="material-symbols-outlined text-sm">verified</span>
-                            <span>Based on Traditional Tibb Nabawi</span>
+                            <span>{c('hero_badge')}</span>
                         </div>
                         <h1 className="text-4xl font-black leading-tight tracking-tight text-text-main-light dark:text-text-main-dark sm:text-5xl lg:text-6xl">
-                            Kenali Karakter Tubuh Anda Sesuai <span className="text-primary">Fitrah</span> Sejak Lahir
+                            {c('hero_title').split('Fitrah')[0]}<span className="text-primary">Fitrah</span>{c('hero_title').split('Fitrah')[1] || ' Sejak Lahir'}
                         </h1>
                         <p className="text-lg font-normal leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
-                            Temukan keseimbangan kesehatan Anda melalui metode screening Mizaj tradisional yang akurat dan terpercaya. Pahami diri Anda untuk hidup lebih sehat.
+                            {c('hero_subtitle')}
                         </p>
                         <div className="flex flex-col gap-4 sm:flex-row">
                             <button
                                 onClick={() => navigate('/screening')}
                                 className="flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-base font-bold text-white shadow-lg shadow-primary/25 hover:bg-primary/90 hover:translate-y-[-2px] transition-all"
                             >
-                                MULAI SCREENING
+                                {c('hero_cta')}
                             </button>
                             <button className="flex h-12 items-center justify-center gap-2 rounded-lg border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark px-6 text-base font-bold text-text-main-light dark:text-text-main-dark hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                                 <span className="material-symbols-outlined text-primary">play_circle</span>
@@ -70,7 +116,7 @@ export default function LandingPage() {
                             <div className="absolute -bottom-12 -left-12 h-64 w-64 rounded-full bg-yellow-400/20 blur-3xl"></div>
                             <div
                                 className="h-full w-full rounded-xl bg-center bg-cover shadow-2xl"
-                                style={{ backgroundImage: "url('/hero_nature_herbs_1769161155289.png')" }}
+                                style={{ backgroundImage: `url('${c('hero_image')}')` }}
                             ></div>
                             {/* Floating Card */}
                             <div className="absolute -bottom-6 -right-6 hidden sm:flex items-center gap-3 rounded-xl bg-white dark:bg-surface-dark p-4 shadow-xl border border-border-light dark:border-border-dark">
@@ -91,16 +137,16 @@ export default function LandingPage() {
             <div className="w-full border-y border-border-light dark:border-border-dark bg-white dark:bg-surface-dark py-8">
                 <div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-8 px-6 text-center lg:justify-evenly lg:px-20">
                     <div className="flex flex-col items-center">
-                        <span className="text-3xl font-bold text-primary">4+</span>
-                        <span className="text-sm text-text-secondary-light">Tipe Mizaj Utama</span>
+                        <span className="text-3xl font-bold text-primary">{c('stat_1_value')}</span>
+                        <span className="text-sm text-text-secondary-light">{c('stat_1_label')}</span>
                     </div>
                     <div className="flex flex-col items-center">
-                        <span className="text-3xl font-bold text-primary">10k+</span>
-                        <span className="text-sm text-text-secondary-light">Pengguna Terdaftar</span>
+                        <span className="text-3xl font-bold text-primary">{c('stat_2_value')}</span>
+                        <span className="text-sm text-text-secondary-light">{c('stat_2_label')}</span>
                     </div>
                     <div className="flex flex-col items-center">
-                        <span className="text-3xl font-bold text-primary">95%</span>
-                        <span className="text-sm text-text-secondary-light">Akurasi Screening</span>
+                        <span className="text-3xl font-bold text-primary">{c('stat_3_value')}</span>
+                        <span className="text-sm text-text-secondary-light">{c('stat_3_label')}</span>
                     </div>
                 </div>
             </div>
