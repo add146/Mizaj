@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mizaj Screening Result</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2a842e",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#141e14",
+                        "result-orange": "#F97316", // Adding an orange for the specific result context
+                        "result-orange-light": "#FFF7ED",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#101911] dark:text-gray-100 flex flex-col min-h-screen">
+<!-- Navbar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e9f1ea] dark:border-gray-800 bg-[#f9fbf9] dark:bg-background-dark px-4 sm:px-10 py-3">
+<div class="flex items-center gap-4 text-[#101911] dark:text-white">
+<div class="size-8 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">Mizaj Screening</h2>
+</div>
+<div class="flex items-center gap-4 sm:gap-8">
+<div class="hidden md:flex items-center gap-9">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">About Mizaj</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Articles</a>
+</div>
+<div class="flex gap-2">
+<button class="flex min-w-[40px] sm:min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-9 sm:h-10 px-3 sm:px-4 bg-primary text-white text-sm font-bold shadow-sm hover:bg-green-700 transition-colors">
+<span class="material-symbols-outlined text-[20px] sm:mr-2">refresh</span>
+<span class="hidden sm:inline">Retake Test</span>
+</button>
+<button class="flex size-9 sm:size-10 cursor-pointer items-center justify-center rounded-full bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-slate-200 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full max-w-[1280px] mx-auto p-4 sm:p-6 lg:p-10 flex flex-col gap-8">
+<!-- Page Heading -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-primary/80 dark:text-primary/60 text-sm font-medium mb-1">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+<span>Analisis Kesehatan Tradisional</span>
+</div>
+<h1 class="text-3xl sm:text-4xl font-black leading-tight tracking-[-0.033em] text-gray-900 dark:text-white">
+                Hasil Screening Mizaj Anda
+            </h1>
+<p class="text-gray-600 dark:text-gray-400 text-base max-w-2xl">
+                Berdasarkan jawaban anda, berikut adalah analisis mendalam mengenai tipe konstitusi tubuh (Mizaj) anda.
+            </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
+<!-- LEFT COLUMN: Main Result & Chart -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- Hero Result Card -->
+<div class="bg-gradient-to-br from-[#FFF7ED] to-[#FFEDD5] dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 sm:p-8 border border-orange-100 dark:border-gray-700 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-64 h-64 bg-orange-200/40 dark:bg-orange-900/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+<div class="relative z-10 flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+<!-- Result Icon/Image -->
+<div class="w-32 h-32 sm:w-40 sm:h-40 shrink-0 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-gray-700" data-alt="Icon representing Panas Lembab Mizaj type, abstract warm and energetic shapes">
+<span class="material-symbols-outlined text-result-orange text-[64px]">local_fire_department</span>
+</div>
+<div class="flex flex-col gap-3 text-center sm:text-left">
+<div class="inline-flex items-center justify-center sm:justify-start gap-2">
+<span class="bg-result-orange/10 text-result-orange px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Dominan</span>
+</div>
+<h2 class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white leading-tight">
+                                PANAS LEMBAB <br/>
+<span class="text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-400">(Sanguinis/Damawi)</span>
+</h2>
+<p class="text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed">
+                                Anda memiliki kecenderungan tubuh yang hangat dan lembab. Tipe ini dikenal energik, sosial, mudah bergaul, namun perlu menjaga keseimbangan cairan tubuh agar tidak berlebihan.
+                            </p>
+</div>
+</div>
+<!-- Action Buttons inside card for mobile, or highlight -->
+<div class="flex flex-wrap gap-3 mt-8 pt-6 border-t border-orange-200 dark:border-gray-700">
+<button class="flex-1 sm:flex-none min-w-[160px] cursor-pointer items-center justify-center rounded-lg h-11 px-5 bg-primary hover:bg-green-700 text-white text-sm font-bold shadow-md transition-all flex gap-2">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span>Download PDF</span>
+</button>
+<button class="flex-1 sm:flex-none min-w-[160px] cursor-pointer items-center justify-center rounded-lg h-11 px-5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-[#25D366] border border-gray-200 dark:border-gray-700 text-sm font-bold shadow-sm transition-all flex gap-2">
+<span class="material-symbols-outlined text-[20px]">share</span>
+<span>Bagikan ke WhatsApp</span>
+</button>
+</div>
+</div>
+<!-- Chart Section -->
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-lg font-bold text-gray-900 dark:text-white">Distribusi Tipe Mizaj</h3>
+<span class="text-xs text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Visualisasi Data</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 items-center">
+<!-- Custom CSS Donut Chart representation -->
+<div class="relative w-48 h-48 mx-auto">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<!-- Background Circle -->
+<path class="text-gray-100 dark:text-gray-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.8"></path>
+<!-- Segments -->
+<!-- Panas Lembab (Dominant) - 45% -->
+<path class="text-result-orange drop-shadow-md" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="45, 100" stroke-width="3.8"></path>
+<!-- Panas Kering - 25% (starts at 45) -->
+<path class="text-yellow-400" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="25, 100" stroke-dashoffset="-45" stroke-width="3.8"></path>
+<!-- Dingin Kering - 15% (starts at 70) -->
+<path class="text-blue-400" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="15, 100" stroke-dashoffset="-70" stroke-width="3.8"></path>
+<!-- Dingin Lembab - 15% (starts at 85) -->
+<path class="text-teal-400" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="15, 100" stroke-dashoffset="-85" stroke-width="3.8"></path>
+</svg>
+<!-- Inner Text -->
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+<span class="text-3xl font-black text-gray-900 dark:text-white">45%</span>
+<span class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Dominan</span>
+</div>
+</div>
+<!-- Legend -->
+<div class="flex flex-col gap-3 text-sm">
+<div class="flex items-center justify-between p-2 rounded bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-900/30">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-result-orange"></div>
+<span class="font-bold text-gray-800 dark:text-gray-200">Panas Lembab</span>
+</div>
+<span class="font-bold text-result-orange">45%</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-yellow-400"></div>
+<span class="font-medium text-gray-600 dark:text-gray-400">Panas Kering</span>
+</div>
+<span class="font-medium text-gray-500">25%</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-blue-400"></div>
+<span class="font-medium text-gray-600 dark:text-gray-400">Dingin Kering</span>
+</div>
+<span class="font-medium text-gray-500">15%</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-teal-400"></div>
+<span class="font-medium text-gray-600 dark:text-gray-400">Dingin Lembab</span>
+</div>
+<span class="font-medium text-gray-500">15%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Detailed Analysis -->
+<div class="lg:col-span-5 flex flex-col h-full">
+<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col h-full">
+<div class="p-6 border-b border-gray-100 dark:border-gray-700">
+<h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">menu_book</span>
+                            Detail &amp; Rekomendasi
+                        </h3>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8">
+<!-- Section 1: Characteristics -->
+<div class="flex flex-col gap-3">
+<h4 class="text-sm font-bold uppercase tracking-wider text-gray-500 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">psychology</span>
+                                Karakteristik
+                            </h4>
+<div class="bg-[#fcfdfc] dark:bg-gray-700/30 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
+<ul class="space-y-3">
+<li class="flex gap-3 text-sm text-gray-700 dark:text-gray-300">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5">check_circle</span>
+<span><strong>Fisik:</strong> Tubuh cenderung berisi, otot kuat, kulit hangat dan kemerahan, denyut nadi kuat.</span>
+</li>
+<li class="flex gap-3 text-sm text-gray-700 dark:text-gray-300">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5">check_circle</span>
+<span><strong>Mental:</strong> Optimis, periang, percaya diri, namun mudah bosan dan emosional sesaat.</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Section 2: Dietary Advice -->
+<div class="flex flex-col gap-3">
+<h4 class="text-sm font-bold uppercase tracking-wider text-gray-500 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">restaurant</span>
+                                Saran Makanan
+                            </h4>
+<div class="grid grid-cols-1 gap-4">
+<!-- Recommended -->
+<div class="p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/30">
+<p class="font-bold text-green-800 dark:text-green-300 text-sm mb-2">Dianjurkan (Pendingin &amp; Pengering)</p>
+<p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        Sayuran hijau segar (bayam, selada), buah-buahan asam-manis (jeruk, apel), kacang-kacangan, daging putih (ayam kampung, ikan).
+                                    </p>
+</div>
+<!-- Avoid -->
+<div class="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30">
+<p class="font-bold text-red-800 dark:text-red-300 text-sm mb-2">Hindari (Pemanas &amp; Pelembab)</p>
+<p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        Makanan terlalu manis, berlemak santan, daging merah berlebih, gorengan, dan buah-buahan yang terlalu matang/manis.
+                                    </p>
+</div>
+</div>
+</div>
+<!-- Section 3: Lifestyle -->
+<div class="flex flex-col gap-3">
+<h4 class="text-sm font-bold uppercase tracking-wider text-gray-500 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">self_improvement</span>
+                                Gaya Hidup
+                            </h4>
+<div class="bg-[#fcfdfc] dark:bg-gray-700/30 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
+<p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    Lakukan olahraga rutin namun tidak terlalu berat (seperti berenang atau jogging ringan). Lakukan bekam (hijamah) secara berkala jika kondisi fisik memungkinkan untuk membuang kelebihan darah.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Disclaimer Footer -->
+<div class="mt-8 text-center border-t border-gray-200 dark:border-gray-800 pt-6 pb-10">
+<p class="text-xs text-gray-400 dark:text-gray-500 max-w-3xl mx-auto">
+                Disclaimer: Hasil screening ini didasarkan pada prinsip pengobatan tradisional Unani/Mizaj dan ditujukan untuk tujuan edukasi serta pengenalan diri. Hasil ini bukan merupakan diagnosis medis profesional. Konsultasikan dengan praktisi kesehatan untuk saran medis yang akurat.
+            </p>
+</div>
+</main>
+<!-- Floating Mobile Action Bar (Visible only on small screens) -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 lg:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40">
+<button class="w-full flex items-center justify-center rounded-lg h-12 bg-primary text-white font-bold shadow-lg">
+            Download Hasil PDF
+        </button>
+</div>
+</body></html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BioFITRA - Admin Login</title>
+<!-- Google Fonts: Lexend -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bee34",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102211",
+                        // Adding custom darker shades for dark mode adaptation
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#162e17",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<div class="min-h-screen flex w-full font-display">
+<!-- Left Side: Image & Branding -->
+<div class="hidden lg:flex w-1/2 relative bg-background-dark overflow-hidden items-center justify-center">
+<!-- Background Image -->
+<div class="absolute inset-0 w-full h-full">
+<div class="w-full h-full bg-center bg-cover bg-no-repeat" data-alt="Calm nature scene with green leaves and sunlight" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD1LFW22PqVnZcetd25GlAHl_XUTZ1R2oA6JdtKvqFoV5UZVU5VX1qvXTD49PCY9WkU3p8bs-Jd45QdM7DF2A_GDfkw4mob5GsKfkSVIMpkh7f6uB-Feg2XyLcnwWaQGN7kaac4hveOC6H4yBfg8_eexU6RT2z8quFEs5eFcbflzL4qqhzco_hCSaGJ-zzB2TyMC7oWauB6soT_XUMHMTsCS5sBsT4PuLJAtdaC_sK6uU8jm30UokSB7hLdlY-0dPS_IyUlCu2tF_mS");'></div>
+<!-- Gradient Overlay for better text readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/90 via-background-dark/40 to-transparent"></div>
+</div>
+<!-- Branding Content -->
+<div class="relative z-10 p-12 flex flex-col items-start justify-end h-full w-full pb-20">
+<div class="flex items-center gap-3 mb-6">
+<div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary text-background-dark">
+<span class="material-symbols-outlined text-3xl">spa</span>
+</div>
+<h1 class="text-4xl font-bold text-white tracking-tight">BioFITRA</h1>
+</div>
+<p class="text-xl text-gray-200 max-w-md font-light leading-relaxed">
+                    Discover your body character type through holistic principles. Secure admin access for managing screenings and data.
+                </p>
+<div class="mt-8 flex gap-2">
+<div class="h-1 w-12 bg-primary rounded-full"></div>
+<div class="h-1 w-12 bg-white/20 rounded-full"></div>
+<div class="h-1 w-12 bg-white/20 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Right Side: Login Form -->
+<div class="flex flex-col w-full lg:w-1/2 justify-center px-6 py-12 lg:px-20 xl:px-24 bg-background-light dark:bg-background-dark">
+<!-- Mobile Logo (visible only on small screens) -->
+<div class="lg:hidden mb-8 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">spa</span>
+<span class="text-2xl font-bold text-gray-900 dark:text-white">BioFITRA</span>
+</div>
+<div class="w-full max-w-md mx-auto">
+<!-- Header -->
+<div class="mb-10">
+<h2 class="text-4xl font-black tracking-tight text-gray-900 dark:text-white mb-3">
+                        Admin Login
+                    </h2>
+<p class="text-gray-600 dark:text-gray-400 text-base font-normal">
+                        Please sign in to manage the BioFITRA dashboard.
+                    </p>
+</div>
+<!-- Form -->
+<form action="#" class="flex flex-col gap-6" method="POST">
+<!-- Email Field -->
+<div class="flex flex-col gap-2">
+<label class="text-gray-900 dark:text-gray-200 text-base font-medium" for="email">
+                            Email Address
+                        </label>
+<div class="relative">
+<input class="w-full h-14 px-4 rounded-lg bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-200" id="email" name="email" placeholder="user@example.com" type="email"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">mail</span>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-2">
+<label class="text-gray-900 dark:text-gray-200 text-base font-medium" for="password">
+                            Password
+                        </label>
+<div class="relative">
+<input class="w-full h-14 px-4 rounded-lg bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-200" id="password" name="password" placeholder="••••••••••" type="password"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300">visibility</span>
+</div>
+</div>
+<!-- Forgot Password Link -->
+<div class="flex justify-end">
+<a class="text-sm font-medium text-green-700 dark:text-primary hover:underline transition-colors" href="#">
+                            Lupa Password?
+                        </a>
+</div>
+<!-- Submit Button -->
+<button class="mt-2 w-full h-14 flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-[#25d62e] active:bg-[#1fb326] text-[#0d1b0e] font-bold text-lg transition-all duration-200 shadow-sm hover:shadow-md transform active:scale-[0.99]" type="submit">
+<span>Masuk ke Dashboard</span>
+<span class="material-symbols-outlined text-xl font-bold">arrow_forward</span>
+</button>
+</form>
+<!-- Footer / Extra info -->
+<div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800 text-center">
+<p class="text-xs text-gray-500 dark:text-gray-500">
+                        © 2024 BioFITRA Health Systems. All rights reserved.
+                        <br/>Protected by reCAPTCHA and Subject to the Privacy Policy.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Toggle Dark Mode Script (Optional utility for checking design) -->
+<script>
+        // Simple check to apply dark mode if system pref matches, though class="light" is enforced in HTML tag as per prompt instructions, 
+        // the css supports dark mode if the class is switched.
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // document.documentElement.classList.add('dark');
+            // document.documentElement.classList.remove('light');
+        }
+    </script>
+</body></html>
