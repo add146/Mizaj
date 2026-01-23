@@ -6,9 +6,11 @@ import participants from './routes/participants';
 import auth from './routes/auth';
 import mizaj from './routes/mizaj';
 import content from './routes/content';
+import uploads from './routes/uploads';
 
 type Bindings = {
 	DB: D1Database;
+	R2_ASSETS: R2Bucket;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -30,5 +32,7 @@ app.route('/api/participants', participants);
 app.route('/api/auth', auth);
 app.route('/api/mizaj', mizaj);
 app.route('/api/content', content);
+app.route('/api/uploads', uploads);
 
 export default app;
+

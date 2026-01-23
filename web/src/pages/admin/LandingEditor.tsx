@@ -14,7 +14,7 @@ const SECTIONS: ContentSection[] = [
             { key: 'hero_badge', label: 'Badge Text', type: 'text' },
             { key: 'hero_title', label: 'Judul Utama', type: 'text' },
             { key: 'hero_subtitle', label: 'Sub Judul', type: 'textarea' },
-            { key: 'hero_image', label: 'URL Gambar Hero', type: 'text' },
+            { key: 'hero_image', label: 'Gambar Hero', type: 'image' },
             { key: 'hero_cta', label: 'Teks Tombol CTA', type: 'text' },
         ]
     },
@@ -32,13 +32,13 @@ const SECTIONS: ContentSection[] = [
     {
         title: 'Kartu Mizaj',
         fields: [
-            { key: 'mizaj_panas_lembab_image', label: 'Gambar Panas Lembab', type: 'text' },
+            { key: 'mizaj_panas_lembab_image', label: 'Gambar Panas Lembab', type: 'image' },
             { key: 'mizaj_panas_lembab_desc', label: 'Deskripsi Panas Lembab', type: 'textarea' },
-            { key: 'mizaj_dingin_lembab_image', label: 'Gambar Dingin Lembab', type: 'text' },
+            { key: 'mizaj_dingin_lembab_image', label: 'Gambar Dingin Lembab', type: 'image' },
             { key: 'mizaj_dingin_lembab_desc', label: 'Deskripsi Dingin Lembab', type: 'textarea' },
-            { key: 'mizaj_panas_kering_image', label: 'Gambar Panas Kering', type: 'text' },
+            { key: 'mizaj_panas_kering_image', label: 'Gambar Panas Kering', type: 'image' },
             { key: 'mizaj_panas_kering_desc', label: 'Deskripsi Panas Kering', type: 'textarea' },
-            { key: 'mizaj_dingin_kering_image', label: 'Gambar Dingin Kering', type: 'text' },
+            { key: 'mizaj_dingin_kering_image', label: 'Gambar Dingin Kering', type: 'image' },
             { key: 'mizaj_dingin_kering_desc', label: 'Deskripsi Dingin Kering', type: 'textarea' },
         ]
     },
@@ -74,6 +74,7 @@ export default function LandingEditor() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [uploading, setUploading] = useState<string | null>(null);
     const [content, setContent] = useState<Record<string, string>>({});
     const [activeSection, setActiveSection] = useState(0);
 
@@ -94,6 +95,19 @@ export default function LandingEditor() {
 
     const handleChange = (key: string, value: string) => {
         setContent(prev => ({ ...prev, [key]: value }));
+    };
+
+    const handleImageUpload = async (key: string, file: File) => {
+        setUploading(key);
+        try {
+            const result = await api.uploadImage(file);
+            setContent(prev => ({ ...prev, [key]: result.url }));
+        } catch (error) {
+            console.error('Upload failed:', error);
+            alert('Gagal mengupload gambar');
+        } finally {
+            setUploading(null);
+        }
     };
 
     const handleSaveSection = async () => {
@@ -178,8 +192,8 @@ export default function LandingEditor() {
                                     key={section.title}
                                     onClick={() => setActiveSection(index)}
                                     className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${activeSection === index
-                                            ? 'bg-primary text-white'
-                                            : 'text-text-secondary-light hover:bg-gray-100 dark:hover:bg-gray-800'
+                                        ? 'bg-primary text-white'
+                                        : 'text-text-secondary-light hover:bg-gray-100 dark:hover:bg-gray-800'
                                         }`}
                                 >
                                     {section.title}
@@ -209,6 +223,43 @@ export default function LandingEditor() {
                                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark focus:ring-2 focus:ring-primary focus:border-transparent"
                                                 placeholder={`Masukkan ${field.label.toLowerCase()}`}
                                             />
+                                        ) : field.type === 'image' ? (
+                                            <div className="space-y-3">
+                                                <div className="flex items-center gap-4">
+                                                    <label className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary font-medium cursor-pointer hover:bg-primary/20 transition-colors">
+                                                        <span className="material-symbols-outlined text-xl">upload</span>
+                                                        {uploading === field.key ? 'Mengupload...' : 'Pilih Gambar'}
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            className="hidden"
+                                                            onChange={(e) => {
+                                                                const file = e.target.files?.[0];
+                                                                if (file) handleImageUpload(field.key, file);
+                                                            }}
+                                                            disabled={uploading === field.key}
+                                                        />
+                                                    </label>
+                                                    {uploading === field.key && (
+                                                        <span className="material-symbols-outlined animate-spin text-primary">progress_activity</span>
+                                                    )}
+                                                </div>
+                                                {content[field.key] && (
+                                                    <div className="relative inline-block">
+                                                        <img
+                                                            src={content[field.key]}
+                                                            alt="Preview"
+                                                            className="max-h-32 rounded-lg object-cover border border-gray-200"
+                                                        />
+                                                        <button
+                                                            onClick={() => handleChange(field.key, '')}
+                                                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center text-sm"
+                                                        >
+                                                            ×
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
                                         ) : (
                                             <input
                                                 type="text"
@@ -216,13 +267,6 @@ export default function LandingEditor() {
                                                 onChange={(e) => handleChange(field.key, e.target.value)}
                                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark focus:ring-2 focus:ring-primary focus:border-transparent"
                                                 placeholder={`Masukkan ${field.label.toLowerCase()}`}
-                                            />
-                                        )}
-                                        {field.type === 'image' && content[field.key] && (
-                                            <img
-                                                src={content[field.key]}
-                                                alt="Preview"
-                                                className="mt-2 max-h-32 rounded-lg object-cover"
                                             />
                                         )}
                                     </div>

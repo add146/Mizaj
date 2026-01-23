@@ -39,8 +39,16 @@ export default function LandingPage() {
     const loadContent = async () => {
         try {
             const data = await api.getSiteContent();
-            // Merge with defaults - API values take priority
-            setContent(prev => ({ ...prev, ...data }));
+            // Merge with defaults - only use API values if non-empty
+            setContent(prev => {
+                const merged = { ...prev };
+                for (const [key, value] of Object.entries(data)) {
+                    if (value && value.trim() !== '') {
+                        merged[key] = value;
+                    }
+                }
+                return merged;
+            });
         } catch (error) {
             console.log('Using default content');
         }

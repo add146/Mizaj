@@ -175,6 +175,22 @@ class ApiClient {
             body: JSON.stringify({ items }),
         });
     }
+
+    async uploadImage(file: File): Promise<{ url: string; filename: string }> {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch(`${this.baseUrl}/api/uploads/upload`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error('Upload failed');
+        }
+
+        return response.json();
+    }
 }
 
 export const api = new ApiClient(API_BASE_URL);
