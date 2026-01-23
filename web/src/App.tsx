@@ -11,6 +11,7 @@ import ParticipantList from './pages/admin/ParticipantList';
 import ParticipantDetail from './pages/admin/ParticipantDetail';
 import MizajContent from './pages/admin/MizajContent';
 import LandingEditor from './pages/admin/LandingEditor';
+import Settings from './pages/admin/Settings';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/admin/participants/:id" element={<ParticipantDetail />} />
         <Route path="/admin/mizaj" element={<MizajContent />} />
         <Route path="/admin/landing" element={<LandingEditor />} />
+        <Route path="/admin/settings" element={<Settings />} />
       </Routes>
     </Router>
   );
