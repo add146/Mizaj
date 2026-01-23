@@ -121,7 +121,7 @@ export default function ParticipantForm() {
                                             onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                                         />
                                         <div className="absolute inset-0 bg-transparent peer-checked:bg-primary peer-checked:shadow-sm transition-all duration-200"></div>
-                                        <span className="relative z-10 text-gray-500 dark:text-gray-400 peer-checked:text-black flex items-center gap-1.5">
+                                        <span className="relative z-10 text-gray-500 dark:text-gray-400 peer-checked:text-white flex items-center gap-1.5">
                                             <span className="material-symbols-outlined text-[18px]">male</span>
                                             Laki-laki
                                         </span>
@@ -136,7 +136,7 @@ export default function ParticipantForm() {
                                             onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                                         />
                                         <div className="absolute inset-0 bg-transparent peer-checked:bg-primary peer-checked:shadow-sm transition-all duration-200"></div>
-                                        <span className="relative z-10 text-gray-500 dark:text-gray-400 peer-checked:text-black flex items-center gap-1.5">
+                                        <span className="relative z-10 text-gray-500 dark:text-gray-400 peer-checked:text-white flex items-center gap-1.5">
                                             <span className="material-symbols-outlined text-[18px]">female</span>
                                             Perempuan
                                         </span>
