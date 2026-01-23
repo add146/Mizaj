@@ -62,10 +62,14 @@ export default function LandingPage() {
             {/* Top Navigation */}
             <header className="sticky top-0 z-50 flex w-full items-center justify-between border-b border-border-light dark:border-border-dark bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md px-6 py-4 lg:px-20">
                 <div className="flex items-center gap-3 text-primary">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <span className="material-symbols-outlined text-2xl">spa</span>
-                    </div>
-                    <h2 className="text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">BioFITRA</h2>
+                    {c('app_logo') ? (
+                        <img src={c('app_logo')} alt="Logo" className="h-10 w-10 object-contain" />
+                    ) : (
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <span className="material-symbols-outlined text-2xl">spa</span>
+                        </div>
+                    )}
+                    <h2 className="text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">{c('app_name') || 'BioFITRA'}</h2>
                 </div>
                 <div className="flex items-center gap-4">
                     <a
@@ -282,35 +286,25 @@ export default function LandingPage() {
 
             {/* Footer */}
             <footer className="bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark py-12 px-6 lg:px-20">
-                <div className="mx-auto flex max-w-7xl flex-col gap-10 md:flex-row md:justify-between">
-                    <div className="flex flex-col gap-4">
+                <div className="mx-auto flex max-w-7xl flex-col gap-6 text-center">
+                    <div className="flex flex-col items-center gap-4">
                         <div className="flex items-center gap-2 text-primary">
-                            <span className="material-symbols-outlined">spa</span>
-                            <span className="text-xl font-bold text-text-main-light dark:text-text-main-dark">BioFITRA</span>
+                            {c('app_logo') ? (
+                                <img src={c('app_logo')} alt="Logo" className="h-8 w-8 object-contain" />
+                            ) : (
+                                <span className="material-symbols-outlined">spa</span>
+                            )}
+                            <span className="text-xl font-bold text-text-main-light dark:text-text-main-dark">{c('app_name') || 'BioFITRA'}</span>
                         </div>
-                        <p className="max-w-xs text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                            Platform kesehatan holistik berbasis Mizaj untuk keseimbangan tubuh dan jiwa sesuai fitrah.
+                        <p className="max-w-md text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                            {c('footer_description') || 'Platform kesehatan holistik berbasis Mizaj untuk keseimbangan tubuh dan jiwa sesuai fitrah.'}
                         </p>
                     </div>
-                    <div className="flex gap-12 sm:gap-20">
-                        <div className="flex flex-col gap-4">
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-text-main-light dark:text-text-main-dark">Menu</h4>
-                            <a className="text-sm text-text-secondary-light hover:text-primary transition-colors" href="#">Beranda</a>
-                            <a className="text-sm text-text-secondary-light hover:text-primary transition-colors" href="#">Tentang Kami</a>
-                            <a className="text-sm text-text-secondary-light hover:text-primary transition-colors" href="#">Blog Kesehatan</a>
-                            <a className="text-sm text-text-secondary-light hover:text-primary transition-colors" href="#">Kontak</a>
-                        </div>
-                        <div className="flex flex-col gap-4">
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-text-main-light dark:text-text-main-dark">Legal</h4>
-                            <a className="text-sm text-text-secondary-light hover:text-primary transition-colors" href="#">Kebijakan Privasi</a>
-                            <a className="text-sm text-text-secondary-light hover:text-primary transition-colors" href="#">Syarat & Ketentuan</a>
-                        </div>
+                    <div className="border-t border-border-light dark:border-border-dark pt-6">
+                        <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark">
+                            © 2024 {c('app_name') || 'BioFITRA'}. All rights reserved.
+                        </p>
                     </div>
-                </div>
-                <div className="mx-auto mt-12 flex max-w-7xl flex-col items-center justify-between border-t border-border-light dark:border-border-dark pt-8 sm:flex-row">
-                    <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark">
-                        © 2024 BioFITRA. All rights reserved.
-                    </p>
                 </div>
             </footer>
         </div>
