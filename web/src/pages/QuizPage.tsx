@@ -175,34 +175,36 @@ export default function QuizPage() {
                 </div>
 
                 {/* Navigation Buttons */}
-                <div className="flex justify-between items-center pt-6 border-t border-border-light dark:border-border-dark">
+                <div className="flex justify-between items-center pt-6 border-t border-border-light dark:border-border-dark gap-2">
                     <button
                         onClick={handlePrevious}
                         disabled={currentQuestion === 0}
-                        className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-text-secondary-light hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="flex items-center gap-1 md:gap-2 px-4 md:px-6 py-3 rounded-lg font-medium text-sm md:text-base text-text-secondary-light hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                     >
-                        <span className="material-symbols-outlined">arrow_back</span>
-                        Sebelumnya
+                        <span className="material-symbols-outlined text-xl">arrow_back</span>
+                        <span className="hidden sm:inline">Sebelumnya</span>
                     </button>
                     <button
                         onClick={handleNext}
                         disabled={!selectedAnswer || submitting}
-                        className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white font-bold shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-1 md:gap-2 px-6 md:px-8 py-3 rounded-lg bg-primary text-white font-bold text-sm md:text-base shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {submitting ? (
                             <>
-                                <span className="material-symbols-outlined animate-spin">progress_activity</span>
-                                Menyimpan...
+                                <span className="material-symbols-outlined animate-spin text-xl">progress_activity</span>
+                                <span className="hidden sm:inline">Menyimpan...</span>
                             </>
                         ) : currentQuestion === questions.length - 1 ? (
                             <>
-                                Lihat Hasil
-                                <span className="material-symbols-outlined">check</span>
+                                <span className="hidden sm:inline">Lihat Hasil</span>
+                                <span className="sm:hidden">Hasil</span>
+                                <span className="material-symbols-outlined text-xl">check</span>
                             </>
                         ) : (
                             <>
-                                Selanjutnya
-                                <span className="material-symbols-outlined">arrow_forward</span>
+                                <span className="hidden sm:inline">Selanjutnya</span>
+                                <span className="sm:hidden">Next</span>
+                                <span className="material-symbols-outlined text-xl">arrow_forward</span>
                             </>
                         )}
                     </button>
