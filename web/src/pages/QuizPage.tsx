@@ -122,26 +122,20 @@ export default function QuizPage() {
                 </section>
 
                 {/* Answers Grid */}
-                <section className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-12">
+                <section className="grid grid-cols-1 gap-4 md:gap-6 mb-12">
                     {currentQ.options.map((option, index) => (
                         <button
                             key={index}
                             onClick={() => setSelectedAnswer(option.mizaj_type)}
                             className={`group relative flex items-start gap-4 p-5 md:p-6 rounded-xl border-2 transition-all duration-200 text-left focus:outline-none focus:ring-4 focus:ring-primary/20 ${selectedAnswer === option.mizaj_type
-                                    ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-lg'
-                                    : 'border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 hover:shadow-lg'
+                                ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-lg'
+                                : 'border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 hover:shadow-lg'
                                 }`}
                         >
-                            <div className={`flex-shrink-0 size-12 rounded-lg flex items-center justify-center transition-colors ${selectedAnswer === option.mizaj_type
-                                    ? 'bg-primary text-white shadow-md'
-                                    : 'bg-gray-100 dark:bg-gray-800 group-hover:bg-primary/10 text-text-main-light dark:text-text-main-dark group-hover:text-primary'
-                                }`}>
-                                <span className="text-xl font-bold">{String.fromCharCode(65 + index)}</span>
-                            </div>
                             <div className="flex flex-col gap-1 flex-grow">
                                 <span className={`font-semibold text-base ${selectedAnswer === option.mizaj_type
-                                        ? 'text-primary'
-                                        : 'text-text-main-light dark:text-text-main-dark'
+                                    ? 'text-primary'
+                                    : 'text-text-main-light dark:text-text-main-dark'
                                     }`}>
                                     {option.option_text}
                                 </span>

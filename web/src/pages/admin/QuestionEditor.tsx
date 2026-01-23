@@ -36,10 +36,20 @@ export default function QuestionEditor() {
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <button className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-text-secondary-light hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium">
+                        <button
+                            onClick={() => navigate('/admin/questions')}
+                            className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-text-secondary-light hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                        >
                             Batal
                         </button>
-                        <button className="px-6 py-2 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+                        <button
+                            onClick={() => {
+                                // TODO: Implement API call to save question
+                                console.log('Saving question:', { questionText, options });
+                                alert('Fitur simpan akan segera diimplementasikan');
+                            }}
+                            className="px-6 py-2 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                        >
                             Simpan Perubahan
                         </button>
                     </div>
@@ -88,9 +98,6 @@ export default function QuestionEditor() {
                         {options.map((option, index) => (
                             <div key={index} className="p-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                                 <div className="flex items-start gap-4">
-                                    <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-lg font-bold text-text-secondary-light">
-                                        {String.fromCharCode(65 + index)}
-                                    </div>
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-3">
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${mizajLabels[option.mizaj_type].color}`}>
@@ -122,12 +129,9 @@ export default function QuestionEditor() {
                     </h3>
                     <div className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-sm border border-border-light dark:border-border-dark">
                         <p className="text-xl font-medium text-text-main-light dark:text-text-main-dark mb-4">{questionText}</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 gap-3">
                             {options.map((option, index) => (
                                 <div key={index} className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary/50 transition-colors cursor-pointer">
-                                    <span className="w-8 h-8 rounded-md bg-gray-100 dark:bg-gray-800 flex items-center justify-center font-bold text-sm">
-                                        {String.fromCharCode(65 + index)}
-                                    </span>
                                     <span className="text-sm text-text-main-light dark:text-text-main-dark">{option.text}</span>
                                 </div>
                             ))}
