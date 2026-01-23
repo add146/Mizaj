@@ -1,1 +1,73 @@
-import { useState } from 'react'; \nimport { useNavigate } from 'react-router-dom'; \n\nconst QuizPage = () => { \n  const navigate = useNavigate(); \n  const [currentQuestion, setCurrentQuestion] = useState(0); \n  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null); \n\n  // Placeholder - will be replaced with API call\n  const questions = [\n    {\n      id: '1',\n      question_text: 'Bagaimana kondisi kulit Anda secara umum sepanjang tahun?',\n      options: [\n        { mizaj_type: 'panas_lembab', option_text: 'Lembap & Halus' },\n        { mizaj_type: 'dingin_lembab', option_text: 'Berminyak' },\n        { mizaj_type: 'panas_kering', option_text: 'Kering & Kasar' },\n        { mizaj_type: 'dingin_kering', option_text: 'Normal Sensitif' }\n      ]\n    }\n  ];\n\n  const handleNext = () => {\n    if (currentQuestion < questions.length - 1) {\n      setCurrentQuestion(currentQuestion + 1);\n      setSelectedAnswer(null);\n    } else {\n      // Quiz complete - navigate to result\n      navigate('/result/demo-id');\n    }\n  };\n\n  const progress = ((currentQuestion + 1) / questions.length) * 100;\n\n  return (\n    <div className=\"bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark font-display antialiased min-h-screen flex flex-col transition-colors duration-200\">\n      {/* Top Navigation */}\n      <header className=\"sticky top-0 z-50 w-full border-b border-stone-200 dark:border-stone-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md\">\n        <div className=\"max-w-[960px] mx-auto px-4 md:px-10 h-16 flex items-center justify-between\">\n          <div className=\"flex items-center gap-3\">\n            <button\n              onClick={() => navigate('/screening')}\n              aria-label=\"Go back\"\n              className=\"p-2 -ml-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-primary transition-colors\"\n            >\n              <span className=\"material-symbols-outlined align-middle\">arrow_back</span>\n            </button>\n            <div className=\"flex items-center gap-2\">\n              <div className=\"size-6 text-primary flex items-center justify-center\">\n                <span className=\"material-symbols-outlined text-[24px]\">spa</span>\n              </div>\n              <h1 className=\"text-lg font-bold leading-tight tracking-tight\">Mizaj Screening</h1>\n            </div>\n          </div>\n        </div>\n      </header>\n\n      {/* Main Content */}\n      <main className=\"flex-grow flex flex-col w-full max-w-[960px] mx-auto px-4 md:px-10 py-6 md:py-10\">\n        {/* Progress Section */}\n        <section className=\"mb-8 md:mb-12\">\n          <div className=\"flex justify-between items-end mb-3 px-1\">\n            <h2 className=\"text-sm font-bold text-primary uppercase tracking-wider\">\n              Soal {currentQuestion + 1} dari {questions.length}\n            </h2>\n            <span className=\"text-xs font-medium text-text-secondary-light dark:text-text-secondary-dark\">\n              {Math.round(progress)}% Selesai\n            </span>\n          </div>\n          <div className=\"h-3 w-full bg-stone-200 dark:bg-stone-800 rounded-full overflow-hidden\">\n            <div className=\"h-full bg-primary rounded-full transition-all duration-500 ease-out\" style={{ width: `${progress}%` }}></div>\n          </div>\n        </section>\n\n        {/* Question Section */}\n        <section className=\"mb-8 md:mb-10 text-center px-2 md:px-12\">\n          <h2 className=\"text-2xl md:text-[32px] font-bold leading-tight md:leading-snug mb-4\">\n            {questions[currentQuestion].question_text}\n          </h2>\n          <p className=\"text-text-secondary-light dark:text-text-secondary-dark text-base md:text-lg\">\n            Pilih satu jawaban yang paling menggambarkan kondisi harian Anda.\n          </p>\n        </section>\n\n        {/* Answers Grid */}\n        <section className=\"grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-12\">\n          {questions[currentQuestion].options.map((option, index) => (\n            <button\n              key={index}\n              onClick={() => setSelectedAnswer(option.mizaj_type)}\n              className={`group relative flex items-start gap-4 p-5 md:p-6 rounded-xl border-2 transition-all duration-200 text-left focus:outline-none focus:ring-4 focus:ring-primary/20 ${\n                selectedAnswer === option.mizaj_type\n                  ? 'border-primary bg-primary/5 dark:bg-primary/10 hover:shadow-lg'\n                  : 'border-stone-200 dark:border-stone-700 bg-surface-light dark:bg-surface-dark hover:border-primary dark:hover:border-primary hover:shadow-lg'\n              }`}\n            >\n              <div className={`flex-shrink-0 size-12 rounded-lg flex items-center justify-center transition-colors ${\n                selectedAnswer === option.mizaj_type\n                  ? 'bg-primary text-white shadow-md'\n                  : 'bg-stone-100 dark:bg-stone-800 group-hover:bg-primary/10 text-text-main-light dark:text-text-main-dark group-hover:text-primary'\n              }`}>\n                <span className=\"text-xl font-bold\">{String.fromCharCode(65 + index)}</span>\n              </div>\n              <div className=\"flex flex-col gap-1 flex-grow\">\n                <span className={`font-semibold ${\n                  selectedAnswer === option.mizaj_type\n                    ? 'text-primary dark:text-primary-light'\n                    : 'text-text-main-light dark:text-text-main-dark'\n                }`}>\n                  {option.option_text}\n                </span>\n              </div>\n              {selectedAnswer === option.mizaj_type && (\n                <div className=\"absolute -top-2 -right-2 bg-background-light dark:bg-background-dark rounded-full\">\n                  <span className=\"material-symbols-outlined text-primary text-3xl fill-current\">check_circle</span>\n                </div>\n              )}\n            </button>\n          ))}\n        </section>\n\n        {/* Navigation Footer */}\n        <nav className=\"mt-auto pt-6 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between gap-4\">\n          <button\n            onClick={() => currentQuestion > 0 && setCurrentQuestion(currentQuestion - 1)}\n            disabled={currentQuestion === 0}\n            className=\"flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-text-secondary-light dark:text-text-secondary-dark hover:bg-stone-100 dark:hover:bg-stone-800 hover:text-text-main-light dark:hover:text-text-main-dark transition-colors focus:outline-none focus:ring-2 focus:ring-stone-400 disabled:opacity-50 disabled:cursor-not-allowed\"\n          >\n            <span className=\"material-symbols-outlined text-xl\">arrow_back</span>\n            <span className=\"hidden md:inline\">Sebelumnya</span>\n          </button>\n          <button\n            onClick={handleNext}\n            disabled={!selectedAnswer}\n            className=\"flex items-center gap-2 px-8 py-3 rounded-lg font-bold bg-primary text-white hover:bg-primary-hover shadow-lg shadow-primary/30 transition-all transform active:scale-95 focus:outline-none focus:ring-4 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed\"\n          >\n            <span>Selanjutnya</span>\n            <span className=\"material-symbols-outlined text-xl\">arrow_forward</span>\n          </button>\n        </nav>\n      </main>\n    </div>\n  );\n};\n\nexport default QuizPage;
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+export default function QuizPage() {
+    const navigate = useNavigate();
+    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+
+    const options = ['Kering & Kasar', 'Lembap & Halus', 'Berminyak', 'Normal'];
+
+    const handleNext = () => {
+        navigate('/result/demo');
+    };
+
+    return (
+        <div className="min-h-screen bg-background-light dark:bg-background-dark p-4">
+            <div className="max-w-4xl mx-auto">
+                <div className="mb-8">
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-sm font-bold text-primary">Soal 1 dari 10</h2>
+                        <span className="text-sm text-gray-500">10% Selesai</span>
+                    </div>
+                    <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                        <div className="h-full bg-primary w-[10%] transition-all"></div>
+                    </div>
+                </div>
+
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold mb-4">
+                        Bagaimana kondisi kulit Anda secara umum?
+                    </h2>
+                    <p className="text-gray-600">Pilih satu jawaban yang paling sesuai</p>
+                </div>
+
+                <div className="grid gap-4 mb-8">
+                    {options.map((option, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => setSelectedAnswer(option)}
+                            className={`p-6 rounded-xl border-2 text-left transition-all ${selectedAnswer === option
+                                    ? 'border-primary bg-primary/5'
+                                    : 'border-gray-200 hover:border-primary/50'
+                                }`}
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold ${selectedAnswer === option ? 'bg-primary text-white' : 'bg-gray-100'
+                                    }`}>
+                                    {String.fromCharCode(65 + idx)}
+                                </div>
+                                <span className="font-medium">{option}</span>
+                            </div>
+                        </button>
+                    ))}
+                </div>
+
+                <div className="flex justify-between">
+                    <button
+                        onClick={() => navigate('/screening')}
+                        className="px-6 py-3 rounded-lg border border-gray-300 font-medium hover:bg-gray-50"
+                    >
+                        Sebelumnya
+                    </button>
+                    <button
+                        onClick={handleNext}
+                        disabled={!selectedAnswer}
+                        className="px-8 py-3 rounded-lg bg-primary text-white font-bold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}

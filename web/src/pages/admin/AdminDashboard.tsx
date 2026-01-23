@@ -1,1 +1,51 @@
-const AdminDashboard = () => { \n  return (\n < div className =\"flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark\">\n      {/* Sidebar */}\n      <aside className=\"w-64 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 bg-surface-light dark:bg-surface-dark flex flex-col justify-between p-4 h-full\">\n        <div className=\"flex flex-col gap-6\">\n          <div className=\"flex flex-col px-2\">\n            <div className=\"flex items-center gap-2 mb-1\">\n              <span className=\"material-symbols-outlined text-primary text-3xl\">spa</span>\n              <h1 className=\"text-xl font-bold tracking-tight\">BioFITRA</h1>\n            </div>\n            <p className=\"text-text-secondary-light dark:text-text-secondary-dark text-xs font-normal\">Admin Console</p>\n          </div>\n\n          <div className=\"flex flex-col gap-1\">\n            <a className=\"flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary\" href=\"#\">\n              <span className=\"material-symbols-outlined\">dashboard</span>\n              <span className=\"text-sm font-medium\">Dashboard</span>\n            </a>\n            <a className=\"flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors\" href=\"#\">\n              <span className=\"material-symbols-outlined\">quiz</span>\n              <span className=\"text-sm font-medium\">Soal</span>\n            </a>\n            <a className=\"flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors\" href=\"#\">\n              <span className=\"material-symbols-outlined\">groups</span>\n              <span className=\"text-sm font-medium\">Peserta</span>\n            </a>\n          </div>\n        </div>\n      </aside>\n\n      {/* Main Content */}\n      <main className=\"flex-1 h-full overflow-y-auto p-6 md:p-10\">\n        <div className=\"max-w-6xl mx-auto flex flex-col gap-8\">\n          <header className=\"flex flex-wrap justify-between items-end gap-4\">\n            <div className=\"flex flex-col gap-1\">\n              <h1 className=\"text-3xl md:text-4xl font-bold tracking-tight\">Selamat Datang, Admin</h1>\n              <p className=\"text-text-secondary-light dark:text-text-secondary-dark text-base\">\n                Here is what's happening with your participants today.\n              </p>\n            </div>\n          </header>\n\n          {/* Stats Cards */}\n          <section className=\"grid grid-cols-1 md:grid-cols-3 gap-4\">\n            <div className=\"bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm\">\n              <p className=\"text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium\">Total Peserta</p>\n              <h3 className=\"text-3xl font-bold mt-2\">0</h3>\n            </div>\n            <div className=\"bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm\">\n              <p className=\"text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium\">Completion Rate</p>\n              <h3 className=\"text-3xl font-bold mt-2\">0%</h3>\n            </div>\n            <div className=\"bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm\">\n              <p className=\"text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium\">Pending Reviews</p>\n              <h3 className=\"text-3xl font-bold mt-2\">0</h3>\n            </div>\n          </section>\n        </div>\n      </main>\n    </div>\n  );\n};\n\nexport default AdminDashboard;
+export default function AdminDashboard() {
+    return (
+        <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark">
+            <aside className="w-64 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-dark flex flex-col p-4 h-full">
+                <div className="flex items-center gap-2 mb-8">
+                    <span className="material-symbols-outlined text-primary text-3xl">spa</span>
+                    <h1 className="text-xl font-bold">BioFITRA</h1>
+                </div>
+
+                <nav className="space-y-2">
+                    <a href="#" className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary">
+                        <span className="material-symbols-outlined">dashboard</span>
+                        <span className="text-sm font-medium">Dashboard</span>
+                    </a>
+                    <a href="#" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100">
+                        <span className="material-symbols-outlined">quiz</span>
+                        <span className="text-sm font-medium">Soal</span>
+                    </a>
+                    <a href="#" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100">
+                        <span className="material-symbols-outlined">groups</span>
+                        <span className="text-sm font-medium">Peserta</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <main className="flex-1 h-full overflow-y-auto p-10">
+                <div className="max-w-6xl mx-auto">
+                    <header className="mb-8">
+                        <h1 className="text-3xl font-bold">Selamat Datang, Admin</h1>
+                        <p className="text-gray-600">Here is what is happening with your participants today.</p>
+                    </header>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="bg-white p-6 rounded-xl border shadow-sm">
+                            <p className="text-gray-600 text-sm font-medium">Total Peserta</p>
+                            <h3 className="text-3xl font-bold mt-2">0</h3>
+                        </div>
+                        <div className="bg-white p-6 rounded-xl border shadow-sm">
+                            <p className="text-gray-600 text-sm font-medium">Completion Rate</p>
+                            <h3 className="text-3xl font-bold mt-2">0%</h3>
+                        </div>
+                        <div className="bg-white p-6 rounded-xl border shadow-sm">
+                            <p className="text-gray-600 text-sm font-medium">Pending Reviews</p>
+                            <h3 className="text-3xl font-bold mt-2">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    );
+}

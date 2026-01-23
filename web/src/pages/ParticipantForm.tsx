@@ -1,1 +1,79 @@
-import { useState } from 'react'; \nimport { useNavigate } from 'react-router-dom'; \n\nconst ParticipantForm = () => { \n  const navigate = useNavigate(); \n  const [formData, setFormData] = useState({ \n    name: '', \n    age: '', \n    gender: 'male', \n    contact: ''\n }); \n\n  const handleSubmit = (e: React.FormEvent) => { \n    e.preventDefault(); \n    // Store form data in session storage\n    sessionStorage.setItem('participantData', JSON.stringify(formData));\n    // Navigate to quiz\n    navigate('/quiz');\n  };\n\n  return (\n    <div className=\"flex flex-col min-h-screen bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark font-display overflow-x-hidden\">\n      {/* Top Navigation */}\n      <nav className=\"w-full bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark relative z-10\">\n        <div className=\"max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8\">\n          <div className=\"flex items-center justify-between h-16\">\n            <div className=\"flex items-center gap-3\">\n              <div className=\"w-8 h-8 text-primary\">\n                <span className=\"material-symbols-outlined text-3xl\">spa</span>\n              </div>\n              <h2 className=\"text-lg font-bold leading-tight tracking-[-0.015em]\">Mizaj Health</h2>\n            </div>\n            <div className=\"hidden md:flex items-center gap-8\">\n              <button onClick={() => navigate('/')} className=\"text-sm font-medium hover:text-primary transition-colors\">Home</button>\n              <a className=\"text-sm font-medium hover:text-primary transition-colors\" href=\"#\">About</a>\n              <a className=\"text-sm font-medium hover:text-primary transition-colors\" href=\"#\">Contact</a>\n            </div>\n          </div>\n        </div>\n      </nav>\n\n      {/* Main Content */}\n      <main className=\"flex-grow flex flex-col items-center justify-center p-4 md:p-8\">\n        <div className=\"w-full max-w-[520px] bg-surface-light dark:bg-surface-dark rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-border-light dark:border-border-dark overflow-hidden\">\n          {/* Header */}\n          <div className=\"px-6 pt-8 pb-4 text-center\">\n            <div className=\"inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 mb-4 text-primary\">\n              <span className=\"material-symbols-outlined text-3xl\">health_and_safety</span>\n            </div>\n            <h1 className=\"text-3xl font-bold leading-tight mb-2 tracking-tight\">Start Screening Mizaj</h1>\n            <p className=\"text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-relaxed max-w-sm mx-auto\">\n              Isi data diri Anda untuk mendapatkan hasil analisis tubuh yang akurat based on traditional health principles.\n            </p>\n          </div>\n\n          {/* Form */}\n          <form onSubmit={handleSubmit} className=\"px-6 pb-8 pt-2 flex flex-col gap-5\">\n            {/* Nama Lengkap */}\n            <div className=\"flex flex-col gap-2\">\n              <label className=\"text-sm font-medium leading-normal\" htmlFor=\"fullName\">\n                Nama Lengkap\n              </label>\n              <div className=\"relative\">\n                <span className=\"absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400\">\n                  <span className=\"material-symbols-outlined text-[20px]\">person</span>\n                </span>\n                <input\n                  className=\"form-input block w-full pl-10 pr-3 py-3 rounded-lg border-gray-200 dark:border-gray-700 bg-background-light dark:bg-black/20 placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-1 sm:text-base h-12 transition-colors\"\n                  id=\"fullName\"\n                  type=\"text\"\n                  required\n                  value={formData.name}\n                  onChange={(e) => setFormData({...formData, name: e.target.value})}\n                  placeholder=\"Masukkan nama lengkap Anda\"\n                />\n              </div>\n            </div>\n\n            {/* Usia & Gender Group */}\n            <div className=\"flex flex-col sm:flex-row gap-5\">\n              {/* Usia */}\n              <div className=\"flex flex-col gap-2 flex-1\">\n                <label className=\"text-sm font-medium leading-normal\" htmlFor=\"age\">\n                  Usia (Tahun)\n                </label>\n                <div className=\"relative\">\n                  <span className=\"absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400\">\n                    <span className=\"material-symbols-outlined text-[20px]\">cake</span>\n                  </span>\n                  <input\n                    className=\"form-input block w-full pl-10 pr-3 py-3 rounded-lg border-gray-200 dark:border-gray-700 bg-background-light dark:bg-black/20 placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-1 sm:text-base h-12 transition-colors\"\n                    id=\"age\"\n                    type=\"number\"\n                    min=\"12\"\n                    max=\"65\"\n                    required\n                    value={formData.age}\n                    onChange={(e) => setFormData({...formData, age: e.target.value})}\n                    placeholder=\"25\"\n                  />\n                </div>\n              </div>\n\n              {/* Jenis Kelamin */}\n              <div className=\"flex flex-col gap-2 flex-1\">\n                <span className=\"text-sm font-medium leading-normal\">Jenis Kelamin</span>\n                <div className=\"grid grid-cols-2 bg-background-light dark:bg-black/20 p-1 rounded-lg h-12 border border-gray-200 dark:border-gray-700\">\n                  <label className=\"cursor-pointer relative flex items-center justify-center rounded-md text-sm font-medium transition-all duration-200 overflow-hidden group\">\n                    <input\n                      className=\"peer sr-only\"\n                      type=\"radio\"\n                      name=\"gender\"\n                      value=\"male\"\n                      checked={formData.gender === 'male'}\n                      onChange={(e) => setFormData({...formData, gender: e.target.value})}\n                    />\n                    <div className=\"absolute inset-0 bg-transparent peer-checked:bg-primary peer-checked:shadow-sm transition-all duration-200\"></div>\n                    <span className=\"relative z-10 text-gray-500 dark:text-gray-400 peer-checked:text-black flex items-center gap-1.5\">\n                      <span className=\"material-symbols-outlined text-[18px]\">male</span>\n                      Laki-laki\n                    </span>\n                  </label>\n                  <label className=\"cursor-pointer relative flex items-center justify-center rounded-md text-sm font-medium transition-all duration-200 overflow-hidden group\">\n                    <input\n                      className=\"peer sr-only\"\n                      type=\"radio\"\n                      name=\"gender\"\n                      value=\"female\"\n                      checked={formData.gender === 'female'}\n                      onChange={(e) => setFormData({...formData, gender: e.target.value})}\n                    />\n                    <div className=\"absolute inset-0 bg-transparent peer-checked:bg-primary peer-checked:shadow-sm transition-all duration-200\"></div>\n                    <span className=\"relative z-10 text-gray-500 dark:text-gray-400 peer-checked:text-black flex items-center gap-1.5\">\n                      <span className=\"material-symbols-outlined text-[18px]\">female</span>\n                      Perempuan\n                    </span>\n                  </label>\n                </div>\n              </div>\n            </div>\n\n            {/* Contact (Optional) */}\n            <div className=\"flex flex-col gap-2\">\n              <div className=\"flex justify-between items-baseline\">\n                <label className=\"text-sm font-medium leading-normal\" htmlFor=\"contact\">\n                  No. WhatsApp / Email\n                </label>\n                <span className=\"text-xs text-text-secondary-light dark:text-gray-500\">Opsional</span>\n              </div>\n              <div className=\"relative\">\n                <span className=\"absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400\">\n                  <span className=\"material-symbols-outlined text-[20px]\">contact_mail</span>\n                </span>\n                <input\n                  className=\"form-input block w-full pl-10 pr-3 py-3 rounded-lg border-gray-200 dark:border-gray-700 bg-background-light dark:bg-black/20 placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-1 sm:text-base h-12 transition-colors\"\n                  id=\"contact\"\n                  type=\"text\"\n                  value={formData.contact}\n                  onChange={(e) => setFormData({...formData, contact: e.target.value})}\n                  placeholder=\"0812...\"\n                />\n              </div>\n            </div>\n\n            {/* Submit Button */}\n            <div className=\"pt-4\">\n              <button\n                type=\"submit\"\n                className=\"group w-full h-12 bg-primary hover:bg-[#25d62d] active:scale-[0.99] rounded-lg flex items-center justify-center gap-2 text-black text-base font-bold shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-surface-dark\"\n              >\n                <span>Lanjutkan ke Screening</span>\n                <span className=\"material-symbols-outlined transition-transform group-hover:translate-x-1\">arrow_forward</span>\n              </button>\n              <p className=\"mt-4 text-center text-xs text-gray-400 dark:text-gray-600\">\n                Dengan melanjutkan, Anda menyetujui <a className=\"underline hover:text-primary\" href=\"#\">Syarat & Ketentuan</a> Mizaj Health.\n              </p>\n            </div>\n          </form>\n        </div>\n      </main>\n    </div>\n  );\n};\n\nexport default ParticipantForm;
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+export default function ParticipantForm() {
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        name: '',
+        age: '',
+        gender: 'male',
+        contact: ''
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        sessionStorage.setItem('participantData', JSON.stringify(formData));
+        navigate('/quiz');
+    };
+
+    return (
+        <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center p-4">
+            <div className="max-w-md w-full bg-white dark:bg-surface-dark rounded-2xl shadow-xl p-8">
+                <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
+                        <span className="material-symbols-outlined text-primary text-3xl">health_and_safety</span>
+                    </div>
+                    <h1 className="text-3xl font-bold mb-2">Start Screening Mizaj</h1>
+                    <p className="text-gray-600">Isi data diri Anda untuk memulai</p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                        <label className="block text-sm font-medium mb-2">Nama Lengkap</label>
+                        <input
+                            type="text"
+                            required
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                            placeholder="Masukkan nama lengkap"
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium mb-2">Usia</label>
+                            <input
+                                type="number"
+                                required
+                                min={12}
+                                max={65}
+                                value={formData.age}
+                                onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-2">Jenis Kelamin</label>
+                            <select
+                                value={formData.gender}
+                                onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                            >
+                                <option value="male">Laki-laki</option>
+                                <option value="female">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full bg-primary text-white py-4 rounded-lg font-bold text-lg hover:bg-primary/90 transition-colors"
+                    >
+                        Lanjutkan ke Screening
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+}

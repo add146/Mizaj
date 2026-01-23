@@ -1,1 +1,37 @@
-const ResultPage = () => { \n  return (\n < div className =\"bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark flex flex-col min-h-screen\">\n      <div className=\"flex-1 w-full max-w-[1280px] mx-auto p-4 sm:p-6 lg:p-10 flex flex-col gap-8\">\n        <div className=\"flex flex-col gap-2\">\n          <h1 className=\"text-3xl sm:text-4xl font-black leading-tight tracking-[-0.033em]\">\n            Hasil Screening Mizaj Anda\n          </h1>\n          <p className=\"text-gray-600 dark:text-gray-400 text-base max-w-2xl\">\n            Berdasarkan jawaban anda, berikut adalah analisis mendalam mengenai tipe konstitusi tubuh (Mizaj) anda.\n          </p>\n        </div>\n\n        {/* Hero Result Card */}\n        <div className=\"bg-gradient-to-br from-[#FFF7ED] to-[#FFEDD5] dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 sm:p-8 border border-orange-100 dark:border-gray-700 shadow-sm\">\n          <div className=\"flex flex-col sm:flex-row gap-6 items-center sm:items-start\">\n            <div className=\"w-32 h-32 sm:w-40 sm:h-40 shrink-0 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-gray-700\">\n              <span className=\"material-symbols-outlined text-orange-500 text-[64px]\">local_fire_department</span>\n            </div>\n            <div className=\"flex flex-col gap-3 text-center sm:text-left\">\n              <span className=\"bg-orange-500/10 text-orange-500 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider inline-block self-center sm:self-start\">\n                Dominan\n              </span>\n              <h2 className=\"text-2xl sm:text-3xl font-black\">\n                PANAS LEMBAB<br />\n                <span className=\"text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-400\">(Sanguinis/Damawi)</span>\n              </h2>\n              <p className=\"text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed\">\n                Anda memiliki kecenderungan tubuh yang hangat dan lembab. Tipe ini dikenal energik, sosial, mudah bergaul, namun perlu menjaga keseimbangan cairan tubuh agar tidak berlebihan.\n              </p>\n            </div>\n          </div>\n        </div>\n\n        <div className=\"text-center border-t border-gray-200 dark:border-gray-800 pt-6 pb-10\">\n          <p className=\"text-xs text-gray-400 dark:text-gray-500 max-w-3xl mx-auto\">\n            Disclaimer: Hasil screening ini didasarkan pada prinsip pengobatan tradisional Unani/Mizaj dan ditujukan untuk tujuan edukasi serta pengenalan diri. Hasil ini bukan merupakan diagnosis medis profesional. Konsultasikan dengan praktisi kesehatan untuk saran medis yang akurat.\n          </p>\n        </div>\n      </div>\n    </div>\n  );\n};\n\nexport default ResultPage;
+export default function ResultPage() {
+    return (
+        <div className="min-h-screen bg-background-light dark:bg-background-dark p-4">
+            <div className="max-w-4xl mx-auto py-12">
+                <div className="text-center mb-8">
+                    <h1 className="text-4xl font-black mb-4">Hasil Screening Mizaj Anda</h1>
+                    <p className="text-gray-600">Berdasarkan jawaban Anda</p>
+                </div>
+
+                <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-8 mb-8">
+                    <div className="flex flex-col md:flex-row items-center gap-6">
+                        <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg">
+                            <span className="material-symbols-outlined text-orange-500 text-6xl">local_fire_department</span>
+                        </div>
+                        <div className="flex-1 text-center md:text-left">
+                            <span className="inline-block bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-bold mb-3">
+                                DOMINAN
+                            </span>
+                            <h2 className="text-3xl font-black mb-2">PANAS LEMBAB</h2>
+                            <p className="text-xl font-bold text-gray-600 mb-3">(Sanguinis/Damawi)</p>
+                            <p className="text-gray-700">
+                                Anda memiliki kecenderungan tubuh yang hangat dan lembab. Tipe ini dikenal energik, sosial, dan mudah bergaul.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="text-center text-sm text-gray-500 border-t pt-6">
+                    <p>
+                        Disclaimer: Hasil screening ini didasarkan pada prinsip pengobatan tradisional.
+                        Konsultasikan dengan praktisi kesehatan untuk saran medis yang akurat.
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+}

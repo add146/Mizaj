@@ -85,13 +85,12 @@ class ApiClient {
         });
 
         if (!response.ok) {
-            throw new Error(`API Error: ${response.statusText}`); \n
+            throw new Error(`API Error: ${response.statusText}`);
         }
 
         return response.json();
     }
 
-    // Auth
     async login(email: string, password: string) {
         const data = await this.request<{ token: string }>('/api/auth/login', {
             method: 'POST',
@@ -107,13 +106,8 @@ class ApiClient {
         localStorage.removeItem('auth_token');
     }
 
-    // Questions
     async getQuestions(): Promise<Question[]> {
         return this.request<Question[]>('/api/questions');
-    }
-
-    async getQuestion(id: string): Promise<Question> {
-        return this.request<Question>(`/api/questions/${id}`);
     }
 
     async submitQuiz(submission: QuizSubmission): Promise<ParticipantResult> {
@@ -125,44 +119,6 @@ class ApiClient {
 
     async getParticipantResult(id: string): Promise<ParticipantResult> {
         return this.request<ParticipantResult>(`/api/participants/${id}`);
-    }
-
-    // Admin - Questions Management
-    async createQuestion(data: Partial<Question>): Promise<Question> {
-        return this.request<Question>('/api/questions', {
-            method: 'POST',
-            body: JSON.stringify(data),
-        });
-    }
-
-    async updateQuestion(id: string, data: Partial<Question>): Promise<Question> {
-        return this.request<Question>(`/api/questions/${id}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-        });
-    }
-
-    async deleteQuestion(id: string): Promise<void> {
-        return this.request<void>(`/api/questions/${id}`, {
-            method: 'DELETE',
-        });
-    }
-
-    // Admin - Participants
-    async getParticipants(): Promise<ParticipantResult[]> {
-        return this.request<ParticipantResult[]>('/api/participants');
-    }
-
-    // Mizaj Results
-    async getMizajResult(type: string): Promise<MizajResult> {
-        return this.request<MizajResult>(`/api/mizaj/${type}`);
-    }
-
-    async updateMizajResult(type: string, data: Partial<MizajResult>): Promise<MizajResult> {
-        return this.request<MizajResult>(`/api/mizaj/${type}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-        });
     }
 }
 
