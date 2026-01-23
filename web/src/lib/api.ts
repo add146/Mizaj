@@ -120,6 +120,45 @@ class ApiClient {
     async getParticipantResult(id: string): Promise<ParticipantResult> {
         return this.request<ParticipantResult>(`/api/participants/${id}`);
     }
+
+    async getParticipants(): Promise<any[]> {
+        return this.request<any[]>('/api/participants');
+    }
+
+    async getMizajTypes(): Promise<MizajResult[]> {
+        return this.request<MizajResult[]>('/api/mizaj');
+    }
+
+    async getMizajType(type: string): Promise<MizajResult> {
+        return this.request<MizajResult>(`/api/mizaj/${type}`);
+    }
+
+    async updateMizaj(type: string, data: Partial<MizajResult>): Promise<any> {
+        return this.request(`/api/mizaj/${type}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async createQuestion(data: any): Promise<any> {
+        return this.request('/api/questions', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async updateQuestion(id: string, data: any): Promise<any> {
+        return this.request(`/api/questions/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async deleteQuestion(id: string): Promise<any> {
+        return this.request(`/api/questions/${id}`, {
+            method: 'DELETE',
+        });
+    }
 }
 
 export const api = new ApiClient(API_BASE_URL);

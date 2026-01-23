@@ -1,21 +1,101 @@
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import api from '../../lib/api';
+
+interface Participant {
+    id: string;
+    name: string;
+    age: number;
+    gender: string;
+    result_mizaj_type: string;
+    needs_interview: boolean;
+    created_at: number;
+    mizaj_title?: string;
+}
+
+interface Stats {
+    total: number;
+    today: number;
+    completionRate: number;
+    pendingReview: number;
+}
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [activeMenu, setActiveMenu] = useState('dashboard');
+    const [participants, setParticipants] = useState<Participant[]>([]);
+    const [stats, setStats] = useState<Stats>({ total: 0, today: 0, completionRate: 0, pendingReview: 0 });
+    const [loading, setLoading] = useState(true);
 
-    const stats = [
-        { label: 'Total Peserta', value: '1,234', icon: 'groups', color: 'bg-blue-100 text-blue-600' },
-        { label: 'Screening Hari Ini', value: '48', icon: 'today', color: 'bg-green-100 text-green-600' },
-        { label: 'Completion Rate', value: '94%', icon: 'check_circle', color: 'bg-purple-100 text-purple-600' },
-        { label: 'Pending Review', value: '12', icon: 'pending_actions', color: 'bg-orange-100 text-orange-600' },
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    const loadData = async () => {
+        try {
+            const data = await api.getParticipants();
+            setParticipants(data);
+
+            // Calculate stats
+            const now = new Date();
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            const todayCount = data.filter((p: Participant) => p.created_at >= startOfDay).length;
+            const pendingCount = data.filter((p: Participant) => p.needs_interview).length;
+
+            setStats({
+                total: data.length,
+                today: todayCount,
+                completionRate: data.length > 0 ? Math.round(((data.length - pendingCount) / data.length) * 100) : 0,
+                pendingReview: pendingCount
+            });
+        } catch (error) {
+            console.error('Failed to load data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleLogout = () => {
+        api.logout();
+        navigate('/admin/login');
+    };
+
+    const menuItems = [
+        { id: 'dashboard', label: 'Dashboard', icon: 'dashboard', path: '/admin' },
+        { id: 'questions', label: 'Kelola Soal', icon: 'quiz', path: '/admin/questions' },
+        { id: 'participants', label: 'Peserta', icon: 'groups', path: '/admin/participants' },
+        { id: 'mizaj', label: 'Konten Mizaj', icon: 'article', path: '/admin/mizaj' },
+        { id: 'settings', label: 'Pengaturan', icon: 'settings', path: '/admin/settings' },
     ];
 
-    const recentParticipants = [
-        { name: 'Ahmad Fauzi', mizaj: 'Panas Lembab', date: '2 menit lalu', status: 'completed' },
-        { name: 'Siti Nurhaliza', mizaj: 'Dingin Lembab', date: '15 menit lalu', status: 'completed' },
-        { name: 'Budi Santoso', mizaj: 'Panas Kering', date: '1 jam lalu', status: 'needs_review' },
-        { name: 'Dewi Lestari', mizaj: 'Dingin Kering', date: '2 jam lalu', status: 'completed' },
+    const statCards = [
+        { label: 'Total Peserta', value: stats.total.toString(), icon: 'groups', color: 'bg-blue-100 text-blue-600' },
+        { label: 'Screening Hari Ini', value: stats.today.toString(), icon: 'today', color: 'bg-green-100 text-green-600' },
+        { label: 'Completion Rate', value: `${stats.completionRate}%`, icon: 'check_circle', color: 'bg-purple-100 text-purple-600' },
+        { label: 'Pending Review', value: stats.pendingReview.toString(), icon: 'pending_actions', color: 'bg-orange-100 text-orange-600' },
     ];
+
+    const formatDate = (timestamp: number) => {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diff = now.getTime() - date.getTime();
+        const minutes = Math.floor(diff / 60000);
+        if (minutes < 60) return `${minutes} menit lalu`;
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return `${hours} jam lalu`;
+        return date.toLocaleDateString('id-ID');
+    };
+
+    const getMizajLabel = (type: string) => {
+        const labels: Record<string, string> = {
+            panas_lembab: 'Panas Lembab',
+            dingin_lembab: 'Dingin Lembab',
+            panas_kering: 'Panas Kering',
+            dingin_kering: 'Dingin Kering'
+        };
+        return labels[type] || type;
+    };
 
     return (
         <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark font-display">
@@ -33,30 +113,22 @@ export default function AdminDashboard() {
                 {/* Navigation */}
                 <nav className="flex-1 p-4">
                     <div className="flex flex-col gap-1">
-                        <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary font-medium">
-                            <span className="material-symbols-outlined">dashboard</span>
-                            <span className="text-sm">Dashboard</span>
-                        </a>
-                        <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                            <span className="material-symbols-outlined">quiz</span>
-                            <span className="text-sm">Kelola Soal</span>
-                        </a>
-                        <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                            <span className="material-symbols-outlined">groups</span>
-                            <span className="text-sm">Peserta</span>
-                        </a>
-                        <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                            <span className="material-symbols-outlined">analytics</span>
-                            <span className="text-sm">Statistik</span>
-                        </a>
-                        <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                            <span className="material-symbols-outlined">article</span>
-                            <span className="text-sm">Konten Mizaj</span>
-                        </a>
-                        <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                            <span className="material-symbols-outlined">settings</span>
-                            <span className="text-sm">Pengaturan</span>
-                        </a>
+                        {menuItems.map((item) => (
+                            <button
+                                key={item.id}
+                                onClick={() => {
+                                    setActiveMenu(item.id);
+                                    navigate(item.path);
+                                }}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-left w-full ${activeMenu === item.id || location.pathname === item.path
+                                        ? 'bg-primary/10 text-primary font-medium'
+                                        : 'text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    }`}
+                            >
+                                <span className="material-symbols-outlined">{item.icon}</span>
+                                <span className="text-sm">{item.label}</span>
+                            </button>
+                        ))}
                     </div>
                 </nav>
 
@@ -71,8 +143,9 @@ export default function AdminDashboard() {
                             <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark">admin@mizaj.com</p>
                         </div>
                         <button
-                            onClick={() => navigate('/admin/login')}
+                            onClick={handleLogout}
                             className="text-text-secondary-light hover:text-red-500 transition-colors"
+                            title="Logout"
                         >
                             <span className="material-symbols-outlined">logout</span>
                         </button>
@@ -90,11 +163,18 @@ export default function AdminDashboard() {
                             <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">Selamat datang kembali, Administrator!</p>
                         </div>
                         <div className="flex items-center gap-4">
-                            <button className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                                <span className="material-symbols-outlined text-text-secondary-light">notifications</span>
-                                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                            <button
+                                onClick={() => navigate('/')}
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg text-text-secondary-light hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                title="Lihat Website"
+                            >
+                                <span className="material-symbols-outlined">visibility</span>
+                                <span className="text-sm">Lihat Website</span>
                             </button>
-                            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-md shadow-primary/20">
+                            <button
+                                onClick={() => navigate('/admin/questions/new')}
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-md shadow-primary/20"
+                            >
                                 <span className="material-symbols-outlined text-xl">add</span>
                                 Tambah Soal
                             </button>
@@ -105,14 +185,16 @@ export default function AdminDashboard() {
                 <div className="p-8">
                     {/* Stats Grid */}
                     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        {stats.map((stat, index) => (
+                        {statCards.map((stat, index) => (
                             <div key={index} className="bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
                                 <div className="flex items-center gap-4">
                                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${stat.color}`}>
                                         <span className="material-symbols-outlined text-2xl">{stat.icon}</span>
                                     </div>
                                     <div>
-                                        <p className="text-2xl font-bold text-text-main-light dark:text-text-main-dark">{stat.value}</p>
+                                        <p className="text-2xl font-bold text-text-main-light dark:text-text-main-dark">
+                                            {loading ? '...' : stat.value}
+                                        </p>
                                         <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">{stat.label}</p>
                                     </div>
                                 </div>
@@ -124,31 +206,56 @@ export default function AdminDashboard() {
                     <section className="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark overflow-hidden">
                         <div className="flex justify-between items-center px-6 py-4 border-b border-border-light dark:border-border-dark">
                             <h2 className="text-lg font-bold text-text-main-light dark:text-text-main-dark">Peserta Terbaru</h2>
-                            <button className="text-sm text-primary font-medium hover:underline">Lihat Semua</button>
+                            <button
+                                onClick={() => navigate('/admin/participants')}
+                                className="text-sm text-primary font-medium hover:underline"
+                            >
+                                Lihat Semua
+                            </button>
                         </div>
-                        <div className="divide-y divide-border-light dark:divide-border-dark">
-                            {recentParticipants.map((participant, index) => (
-                                <div key={index} className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                                            {participant.name.charAt(0)}
+                        {loading ? (
+                            <div className="p-8 text-center text-text-secondary-light">
+                                <span className="material-symbols-outlined animate-spin text-4xl">progress_activity</span>
+                                <p className="mt-2">Memuat data...</p>
+                            </div>
+                        ) : participants.length === 0 ? (
+                            <div className="p-8 text-center text-text-secondary-light">
+                                <span className="material-symbols-outlined text-4xl">inbox</span>
+                                <p className="mt-2">Belum ada peserta</p>
+                            </div>
+                        ) : (
+                            <div className="divide-y divide-border-light dark:divide-border-dark">
+                                {participants.slice(0, 5).map((participant) => (
+                                    <div
+                                        key={participant.id}
+                                        onClick={() => navigate(`/admin/participants/${participant.id}`)}
+                                        className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                                {participant.name.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-text-main-light dark:text-text-main-dark">{participant.name}</p>
+                                                <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                                    {getMizajLabel(participant.result_mizaj_type)}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="font-medium text-text-main-light dark:text-text-main-dark">{participant.name}</p>
-                                            <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">{participant.mizaj}</p>
+                                        <div className="flex items-center gap-4">
+                                            <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                                {formatDate(participant.created_at)}
+                                            </span>
+                                            {participant.needs_interview ? (
+                                                <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-medium">Perlu Review</span>
+                                            ) : (
+                                                <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">Selesai</span>
+                                            )}
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">{participant.date}</span>
-                                        {participant.status === 'completed' ? (
-                                            <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">Selesai</span>
-                                        ) : (
-                                            <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-medium">Perlu Review</span>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        )}
                     </section>
                 </div>
             </main>
