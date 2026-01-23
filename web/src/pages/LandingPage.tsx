@@ -70,7 +70,7 @@ export default function LandingPage() {
                             <div className="absolute -bottom-12 -left-12 h-64 w-64 rounded-full bg-yellow-400/20 blur-3xl"></div>
                             <div
                                 className="h-full w-full rounded-xl bg-center bg-cover shadow-2xl"
-                                style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDttAmyFlFicbIVGGHPaKOQIwvtVnSNlcSG0rbeDHFF23otwUW4KH1HTB0B8EPW2G35LLYAGulhA5TUlFo9rT1kbU9one4ii9roZ6MIt3ORyBM78qDLfjAiRRrV23vQD4ZZWGKqGrOreidCw3HRbYx-8CkAt4csR6KChoPuy8mdFAcTZ_EEh3Z5bm9h8ENkyuc3vGck4WbzkW3xDy-2O4boOjMmqvRu_gQWUAY61lxSQRxw1wX6vtfLHyn8_Itl1YB6a9SspHYIr5TH')" }}
+                                style={{ backgroundImage: "url('/hero_nature_herbs_1769161155289.png')" }}
                             ></div>
                             {/* Floating Card */}
                             <div className="absolute -bottom-6 -right-6 hidden sm:flex items-center gap-3 rounded-xl bg-white dark:bg-surface-dark p-4 shadow-xl border border-border-light dark:border-border-dark">
@@ -119,7 +119,7 @@ export default function LandingPage() {
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                         {/* Card 1: Panas Lembab */}
                         <div className="group flex flex-col overflow-hidden rounded-2xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBNPVbkaOwoPsuJJDRLBXfwO4Sfr2sLapuu7y51-TxLi4GT1irVUX5uEoj-FmTbmPXoUPxihLxJzss4-0DoenoYB4S6OnWY6gtXQ5xwdD31xIGwBp-DNXqZKeDqS0KLm7qo_DWqncAQ3gSU_XugV1ZDwuINn5JU1-HdjFbaMGNmF5EMxKQCG7ehGt7rBJu6FB25hW0fSd3iFCrmZm22RzAofSzX6aUaZh-aL5v1DEC8pfABFqQJhPWLf2V2gUPWzs6P9hD2IE10quDN')" }}></div>
+                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('/panas_lembab_tropical_1769161184075.png')" }}></div>
                             <div className="flex flex-1 flex-col p-6">
                                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
                                     <span className="material-symbols-outlined">wb_sunny</span>
@@ -132,7 +132,7 @@ export default function LandingPage() {
                         </div>
                         {/* Card 2: Dingin Lembab */}
                         <div className="group flex flex-col overflow-hidden rounded-2xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBwA1qL95wNPYTRTnb6otDiYKYWRT6O2v-0IqLWjbTroPQgyGD4k6vB0L8e69AM_HR54JXRyWcq_ttqFkBmaHTcGRvV4TbM3iFqi3PChnJnn3EiOd_ywetUqybZFzAf446DzlnIwpTh4dWXq2EIbEWFCLMCO6y2vISllPGiSxl3Zcu5eygPs4O8TIg7moqD5d8ch0Kh7hTbyskjAq2OEAqEo7PK-Y-d_j2xB4FeyQh_fQonm2Pco8b7hY_-T8uAbSqUL38OantyEXyo')" }}></div>
+                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('/dingin_lembab_misty_1769161212298.png')" }}></div>
                             <div className="flex flex-1 flex-col p-6">
                                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
                                     <span className="material-symbols-outlined">water_drop</span>
@@ -145,7 +145,7 @@ export default function LandingPage() {
                         </div>
                         {/* Card 3: Panas Kering */}
                         <div className="group flex flex-col overflow-hidden rounded-2xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDbTJkJXDoqj28RZa3qk1tjtlkqzcWixUVsgtRsBOuRSU_BgB1SFtzVHqOewrNRcfFCd4K-FsYECWAYhekjLlZlAImBYtR6GIwD3DasEq9RKrUd8xSMTJ3fb0ss9w13MgcD2El8L2bMdHH-5XIQ0F2gP5IrWtalyc3aomwgoPHQ0pApvboDlSC1UpzhgJc5r9qjOXkGVn2UrZdsnJAjiAO70QpAen7eJ-oEz_BLrExsC7ZFJ25hUrldnuB4EFgxTqsJyk_-0E583Wfq')" }}></div>
+                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('/panas_kering_desert_1769161245061.png')" }}></div>
                             <div className="flex flex-1 flex-col p-6">
                                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
                                     <span className="material-symbols-outlined">local_fire_department</span>
@@ -158,7 +158,7 @@ export default function LandingPage() {
                         </div>
                         {/* Card 4: Dingin Kering */}
                         <div className="group flex flex-col overflow-hidden rounded-2xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDZ1F5EYPEjgPHqh81yIIZnBrfnCnP5Mq8Dc_WPvbjusC2NFD5YN80QEWYNsWHxuhC9WKcaI87OzHRf30A15hNyyRSNvYnXSQ7se5OAwF5TKV4RZruXUsjcS0mx2zeAJl_Y682bh6o2qvTMBeN5IVsFkxc8Fq5X18zKJoFd091n058eRvE7XNLulNfu7q6ojHewjz5vJwt0YoKO0fkRSOEatal7WBiMu_EF2iDJ7epn_WsET2kqcGydgFe75B4xOwXCbB53r3Ye2Iz1')" }}></div>
+                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('/dingin_kering_mountain_1769161269707.png')" }}></div>
                             <div className="flex flex-1 flex-col p-6">
                                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400">
                                     <span className="material-symbols-outlined">ac_unit</span>
