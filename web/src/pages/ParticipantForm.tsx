@@ -85,7 +85,7 @@ export default function ParticipantForm() {
                         {/* Usia & Gender Group */}
                         <div className="flex flex-col sm:flex-row gap-5">
                             {/* Usia */}
-                            <div className="flex flex-col gap-2 flex-1">
+                            <div className="flex flex-col gap-2 w-full sm:w-[140px]">
                                 <label className="text-sm font-medium leading-normal" htmlFor="age">
                                     Usia (Tahun)
                                 </label>
