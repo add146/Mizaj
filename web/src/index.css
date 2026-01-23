@@ -1,12 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2a842e;
+  --color-primary-dark: #1e6021;
+  --color-primary-light: #e2f0e3;
+  --color-background-light: #f6f8f6;
+  --color-background-dark: #141e14;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #1c2b1c;
+  --color-text-main-light: #101911;
+  --color-text-main-dark: #f0fdf4;
+  --color-text-secondary-light: #5b8b5d;
+  --color-text-secondary-dark: #a3cca5;
+  --color-border-light: #e9f1ea;
+  --color-border-dark: #2f422f;
+  --color-mizaj-panas-lembab: #FF7043;
+  --color-mizaj-dingin-lembab: #42A5F5;
+  --color-mizaj-panas-kering: #EF5350;
+  --color-mizaj-dingin-kering: #78909C;
+  --font-family-display: 'Lexend', sans-serif;
+  --font-family-body: 'Noto Sans', sans-serif;
+}
 
 body {
-  font-family: 'Lexend', 'Noto Sans', sans-serif;
+  font-family: var(--font-family-display);
 }
 
 .material-symbols-outlined {
