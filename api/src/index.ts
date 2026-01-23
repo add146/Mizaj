@@ -1,26 +1,32 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.jsonc`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import questions from './routes/questions';
+import quiz from './routes/quiz';
+import participants from './routes/participants';
+import auth from './routes/auth';
+import mizaj from './routes/mizaj';
 
-export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		const url = new URL(request.url);
-		switch (url.pathname) {
-			case '/message':
-				return new Response('Hello, World!');
-			case '/random':
-				return new Response(crypto.randomUUID());
-			default:
-				return new Response('Not Found', { status: 404 });
-		}
-	},
-} satisfies ExportedHandler<Env>;
+type Bindings = {
+	DB: D1Database;
+};
+
+const app = new Hono<{ Bindings: Bindings }>();
+
+// Enable CORS for frontend
+app.use('*', cors({
+	origin: ['http://localhost:5173', 'https://mizaj.pages.dev'],
+	allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+	allowHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Health check
+app.get('/', (c) => c.json({ status: 'ok', message: 'BioFITRA API v1.0' }));
+
+// API routes
+app.route('/api/questions', questions);
+app.route('/api/quiz', quiz);
+app.route('/api/participants', participants);
+app.route('/api/auth', auth);
+app.route('/api/mizaj', mizaj);
+
+export default app;
