@@ -1,7 +1,98 @@
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import api, { type ParticipantResult } from '../lib/api';
 
 export default function ResultPage() {
     const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
+    const location = useLocation();
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState<ParticipantResult | null>(null);
+
+    useEffect(() => {
+        // Check if result was passed via navigation state
+        if (location.state?.result) {
+            setData(location.state.result);
+            setLoading(false);
+        } else if (id) {
+            loadResult(id);
+        } else {
+            navigate('/');
+        }
+    }, [id]);
+
+    const loadResult = async (participantId: string) => {
+        try {
+            const result = await api.getParticipantResult(participantId);
+            setData(result);
+        } catch (error) {
+            console.error('Failed to load result:', error);
+            navigate('/');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const getMizajConfig = (type: string) => {
+        const configs: Record<string, { icon: string; color: string; bgColor: string; borderColor: string }> = {
+            panas_lembab: {
+                icon: 'wb_sunny',
+                color: 'text-orange-500',
+                bgColor: 'from-orange-50 to-orange-100 dark:from-orange-950/30 dark:to-orange-900/20',
+                borderColor: 'border-orange-200 dark:border-orange-800/50'
+            },
+            dingin_lembab: {
+                icon: 'water_drop',
+                color: 'text-blue-500',
+                bgColor: 'from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/20',
+                borderColor: 'border-blue-200 dark:border-blue-800/50'
+            },
+            panas_kering: {
+                icon: 'local_fire_department',
+                color: 'text-red-500',
+                bgColor: 'from-red-50 to-red-100 dark:from-red-950/30 dark:to-red-900/20',
+                borderColor: 'border-red-200 dark:border-red-800/50'
+            },
+            dingin_kering: {
+                icon: 'ac_unit',
+                color: 'text-gray-500',
+                bgColor: 'from-gray-50 to-gray-100 dark:from-gray-950/30 dark:to-gray-900/20',
+                borderColor: 'border-gray-200 dark:border-gray-800/50'
+            }
+        };
+        return configs[type] || configs['panas_lembab'];
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
+                <div className="text-center">
+                    <span className="material-symbols-outlined animate-spin text-4xl text-primary">progress_activity</span>
+                    <p className="mt-4 text-text-secondary-light">Memuat hasil...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (!data) {
+        return (
+            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
+                <div className="text-center">
+                    <span className="material-symbols-outlined text-6xl text-gray-300">error</span>
+                    <h2 className="mt-4 text-xl font-bold text-text-main-light">Hasil Tidak Ditemukan</h2>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-medium"
+                    >
+                        Kembali
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    const { participant, mizaj_result } = data;
+    const config = getMizajConfig(participant.result_mizaj_type);
 
     return (
         <div className="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark font-display antialiased min-h-screen flex flex-col">
@@ -32,124 +123,92 @@ export default function ResultPage() {
                         Hasil Screening Mizaj Anda
                     </h1>
                     <p className="text-text-secondary-light dark:text-text-secondary-dark text-base max-w-2xl">
-                        Berdasarkan jawaban anda, berikut adalah analisis mendalam mengenai tipe konstitusi tubuh (Mizaj) anda.
+                        Halo <strong>{participant.name}</strong>, berdasarkan jawaban Anda, berikut adalah analisis mendalam mengenai tipe konstitusi tubuh (Mizaj) Anda.
                     </p>
                 </div>
 
                 {/* Hero Result Card */}
-                <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950/30 dark:to-orange-900/20 rounded-2xl p-6 sm:p-8 border border-orange-200 dark:border-orange-800/50 shadow-lg">
+                <div className={`bg-gradient-to-br ${config.bgColor} rounded-2xl p-6 sm:p-8 border ${config.borderColor} shadow-lg`}>
                     <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
                         <div className="w-32 h-32 sm:w-40 sm:h-40 shrink-0 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-xl border-4 border-white dark:border-gray-700">
-                            <span className="material-symbols-outlined text-orange-500 text-[64px]">local_fire_department</span>
+                            <span className={`material-symbols-outlined ${config.color} text-[64px]`}>{config.icon}</span>
                         </div>
                         <div className="flex flex-col gap-3 text-center sm:text-left">
-                            <span className="inline-block self-center sm:self-start bg-orange-500 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-md">
+                            <span className={`inline-block self-center sm:self-start bg-primary text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-md`}>
                                 Tipe Dominan
                             </span>
                             <h2 className="text-2xl sm:text-3xl font-black">
-                                PANAS LEMBAB
-                                <span className="block text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-400 mt-1">(Sanguinis / Damawi)</span>
+                                {mizaj_result.title.toUpperCase()}
+                                <span className="block text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-400 mt-1">
+                                    ({mizaj_result.mizaj_type.replace('_', ' ')})
+                                </span>
                             </h2>
                             <p className="text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed">
-                                Anda memiliki kecenderungan tubuh yang hangat dan lembab. Tipe ini dikenal energik, sosial, mudah bergaul, namun perlu menjaga keseimbangan cairan tubuh agar tidak berlebihan.
+                                {mizaj_result.description}
                             </p>
                         </div>
                     </div>
                 </div>
 
+                {/* Interview Notice */}
+                {participant.needs_interview && (
+                    <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4">
+                        <div className="flex items-center gap-3 text-yellow-700 dark:text-yellow-400">
+                            <span className="material-symbols-outlined text-2xl">info</span>
+                            <div>
+                                <p className="font-bold">Memerlukan Konsultasi Lanjutan</p>
+                                <p className="text-sm text-yellow-600 dark:text-yellow-500">
+                                    Hasil screening Anda menunjukkan keseimbangan antar tipe Mizaj. Disarankan untuk konsultasi dengan praktisi untuk analisis lebih mendalam.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Characteristics Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Physical Characteristics */}
+                {mizaj_result.characteristics && (
                     <div className="bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-border-light dark:border-border-dark">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 text-orange-600">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
                                 <span className="material-symbols-outlined">person</span>
                             </div>
-                            <h3 className="text-lg font-bold">Karakteristik Fisik</h3>
+                            <h3 className="text-lg font-bold">Karakteristik</h3>
                         </div>
-                        <ul className="space-y-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                            <li className="flex items-start gap-2">
-                                <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                Tubuh cenderung berisi dengan otot kuat
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                Kulit hangat dan kemerahan
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                Denyut nadi kuat dan cepat
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                Metabolisme aktif
-                            </li>
-                        </ul>
+                        <p className="text-text-secondary-light dark:text-text-secondary-dark">
+                            {mizaj_result.characteristics}
+                        </p>
                     </div>
-
-                    {/* Mental Characteristics */}
-                    <div className="bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-border-light dark:border-border-dark">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-                                <span className="material-symbols-outlined">psychology</span>
-                            </div>
-                            <h3 className="text-lg font-bold">Karakteristik Mental</h3>
-                        </div>
-                        <ul className="space-y-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                            <li className="flex items-start gap-2">
-                                <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                Optimis dan periang
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                Percaya diri dan sosial
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                Mudah bergaul
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                Cenderung emosional sesaat
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                )}
 
                 {/* Recommendations Section */}
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl p-6 border border-green-200 dark:border-green-800/50">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600">
-                            <span className="material-symbols-outlined">restaurant</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {mizaj_result.dietary_recommendations && (
+                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl p-6 border border-green-200 dark:border-green-800/50">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600">
+                                    <span className="material-symbols-outlined">restaurant</span>
+                                </div>
+                                <h3 className="text-lg font-bold">Rekomendasi Pola Makan</h3>
+                            </div>
+                            <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                {mizaj_result.dietary_recommendations}
+                            </p>
                         </div>
-                        <h3 className="text-lg font-bold">Rekomendasi Pola Makan</h3>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h4 className="font-semibold text-green-700 dark:text-green-400 mb-2 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-lg">thumb_up</span>
-                                Dianjurkan
-                            </h4>
-                            <ul className="text-sm text-text-secondary-light dark:text-text-secondary-dark space-y-1">
-                                <li>• Sayuran hijau segar (bayam, selada)</li>
-                                <li>• Buah-buahan asam-manis (jeruk, apel)</li>
-                                <li>• Kacang-kacangan</li>
-                                <li>• Daging putih (ayam kampung, ikan)</li>
-                            </ul>
+                    )}
+
+                    {mizaj_result.lifestyle_recommendations && (
+                        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 rounded-xl p-6 border border-blue-200 dark:border-blue-800/50">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                                    <span className="material-symbols-outlined">self_improvement</span>
+                                </div>
+                                <h3 className="text-lg font-bold">Rekomendasi Gaya Hidup</h3>
+                            </div>
+                            <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                {mizaj_result.lifestyle_recommendations}
+                            </p>
                         </div>
-                        <div>
-                            <h4 className="font-semibold text-red-700 dark:text-red-400 mb-2 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-lg">thumb_down</span>
-                                Hindari
-                            </h4>
-                            <ul className="text-sm text-text-secondary-light dark:text-text-secondary-dark space-y-1">
-                                <li>• Makanan terlalu manis</li>
-                                <li>• Berlemak santan</li>
-                                <li>• Daging merah berlebih</li>
-                                <li>• Gorengan</li>
-                            </ul>
-                        </div>
-                    </div>
+                    )}
                 </div>
 
                 {/* CTA Section */}
@@ -161,7 +220,18 @@ export default function ResultPage() {
                         <span className="material-symbols-outlined">refresh</span>
                         Screening Ulang
                     </button>
-                    <button className="flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary/10 transition-all">
+                    <button
+                        onClick={() => {
+                            if (navigator.share) {
+                                navigator.share({
+                                    title: 'Hasil Screening Mizaj BioFITRA',
+                                    text: `Tipe Mizaj saya: ${mizaj_result.title}`,
+                                    url: window.location.href
+                                });
+                            }
+                        }}
+                        className="flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary/10 transition-all"
+                    >
                         <span className="material-symbols-outlined">share</span>
                         Bagikan Hasil
                     </button>

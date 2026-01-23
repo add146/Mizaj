@@ -12,8 +12,16 @@ export default function ParticipantForm() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        sessionStorage.setItem('participantData', JSON.stringify(formData));
-        navigate('/quiz');
+        // Pass participant data to QuizPage via navigation state
+        navigate('/quiz', {
+            state: {
+                participant: {
+                    name: formData.name,
+                    age: parseInt(formData.age),
+                    gender: formData.gender
+                }
+            }
+        });
     };
 
     return (

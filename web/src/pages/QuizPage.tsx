@@ -1,66 +1,121 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import api, { type Question } from '../lib/api';
+
+interface Answer {
+    question_id: string;
+    selected_mizaj: string;
+}
 
 export default function QuizPage() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [questions, setQuestions] = useState<Question[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-    const [answers, setAnswers] = useState<string[]>([]);
+    const [answers, setAnswers] = useState<Answer[]>([]);
 
-    const questions = [
-        {
-            id: '1',
-            question_text: 'Bagaimana kondisi kulit Anda secara umum sepanjang tahun?',
-            options: [
-                { mizaj_type: 'panas_lembab', option_text: 'Lembap, halus, dan sering terasa hangat' },
-                { mizaj_type: 'dingin_lembab', option_text: 'Berminyak dan cenderung pucat' },
-                { mizaj_type: 'panas_kering', option_text: 'Kering, kasar, dan sering terasa panas' },
-                { mizaj_type: 'dingin_kering', option_text: 'Kering dan terasa dingin saat disentuh' }
-            ]
-        },
-        {
-            id: '2',
-            question_text: 'Bagaimana respons tubuh Anda terhadap cuaca panas?',
-            options: [
-                { mizaj_type: 'panas_lembab', option_text: 'Merasa tidak nyaman dan mudah berkeringat' },
-                { mizaj_type: 'dingin_lembab', option_text: 'Cukup bisa mentoleransi' },
-                { mizaj_type: 'panas_kering', option_text: 'Sangat tidak nyaman, mudah dehidrasi' },
-                { mizaj_type: 'dingin_kering', option_text: 'Menyukai cuaca hangat, merasa lebih baik' }
-            ]
-        },
-        {
-            id: '3',
-            question_text: 'Bagaimana pola tidur Anda secara umum?',
-            options: [
-                { mizaj_type: 'panas_lembab', option_text: 'Tidur nyenyak, mudah tertidur' },
-                { mizaj_type: 'dingin_lembab', option_text: 'Tidur sangat lama, sulit bangun' },
-                { mizaj_type: 'panas_kering', option_text: 'Tidur sedikit tapi merasa cukup' },
-                { mizaj_type: 'dingin_kering', option_text: 'Sulit tidur, sering terbangun' }
-            ]
+    // Get participant data from navigation state
+    const participant = location.state?.participant;
+
+    useEffect(() => {
+        if (!participant) {
+            navigate('/screening');
+            return;
         }
-    ];
+        loadQuestions();
+    }, []);
 
-    const handleNext = () => {
-        if (selectedAnswer) {
-            const newAnswers = [...answers];
-            newAnswers[currentQuestion] = selectedAnswer;
-            setAnswers(newAnswers);
+    const loadQuestions = async () => {
+        try {
+            const data = await api.getQuestions();
+            setQuestions(data);
+        } catch (error) {
+            console.error('Failed to load questions:', error);
+            alert('Gagal memuat soal. Silakan coba lagi.');
+            navigate('/screening');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-            if (currentQuestion < questions.length - 1) {
-                setCurrentQuestion(currentQuestion + 1);
-                setSelectedAnswer(answers[currentQuestion + 1] || null);
-            } else {
-                navigate('/result/demo');
-            }
+    const handleNext = async () => {
+        if (!selectedAnswer) return;
+
+        const newAnswers = [...answers];
+        const existingIndex = newAnswers.findIndex(a => a.question_id === questions[currentQuestion].id);
+
+        if (existingIndex >= 0) {
+            newAnswers[existingIndex] = { question_id: questions[currentQuestion].id, selected_mizaj: selectedAnswer };
+        } else {
+            newAnswers.push({ question_id: questions[currentQuestion].id, selected_mizaj: selectedAnswer });
+        }
+        setAnswers(newAnswers);
+
+        if (currentQuestion < questions.length - 1) {
+            setCurrentQuestion(currentQuestion + 1);
+            const nextAnswer = newAnswers.find(a => a.question_id === questions[currentQuestion + 1]?.id);
+            setSelectedAnswer(nextAnswer?.selected_mizaj || null);
+        } else {
+            // Submit quiz
+            await submitQuiz(newAnswers);
+        }
+    };
+
+    const submitQuiz = async (finalAnswers: Answer[]) => {
+        setSubmitting(true);
+        try {
+            const result = await api.submitQuiz({
+                participant,
+                answers: finalAnswers
+            });
+            navigate(`/result/${result.participant.id}`, { state: { result } });
+        } catch (error) {
+            console.error('Failed to submit quiz:', error);
+            alert('Gagal menyimpan hasil. Silakan coba lagi.');
+        } finally {
+            setSubmitting(false);
         }
     };
 
     const handlePrevious = () => {
         if (currentQuestion > 0) {
             setCurrentQuestion(currentQuestion - 1);
-            setSelectedAnswer(answers[currentQuestion - 1] || null);
+            const prevAnswer = answers.find(a => a.question_id === questions[currentQuestion - 1]?.id);
+            setSelectedAnswer(prevAnswer?.selected_mizaj || null);
         }
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
+                <div className="text-center">
+                    <span className="material-symbols-outlined animate-spin text-4xl text-primary">progress_activity</span>
+                    <p className="mt-4 text-text-secondary-light">Memuat soal...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (questions.length === 0) {
+        return (
+            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
+                <div className="text-center">
+                    <span className="material-symbols-outlined text-6xl text-gray-300">quiz</span>
+                    <h2 className="mt-4 text-xl font-bold text-text-main-light">Belum Ada Soal</h2>
+                    <p className="mt-2 text-text-secondary-light">Soal screening belum tersedia.</p>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-medium"
+                    >
+                        Kembali
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     const progress = ((currentQuestion + 1) / questions.length) * 100;
     const currentQ = questions[currentQuestion];
@@ -78,96 +133,80 @@ export default function QuizPage() {
                         >
                             <span className="material-symbols-outlined align-middle">arrow_back</span>
                         </button>
-                        <div className="flex items-center gap-2">
-                            <div className="size-6 text-primary flex items-center justify-center">
-                                <span className="material-symbols-outlined text-[24px]">spa</span>
-                            </div>
-                            <h1 className="text-lg font-bold leading-tight tracking-tight">Mizaj Screening</h1>
-                        </div>
+                        <h1 className="text-lg font-bold leading-tight tracking-tight">Screening Mizaj</h1>
                     </div>
-                    <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                    <span className="text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark">
                         {currentQuestion + 1} / {questions.length}
-                    </div>
+                    </span>
                 </div>
             </header>
 
-            {/* Main Content */}
-            <main className="flex-grow flex flex-col w-full max-w-[960px] mx-auto px-4 md:px-10 py-6 md:py-10">
-                {/* Progress Section */}
-                <section className="mb-8 md:mb-12">
-                    <div className="flex justify-between items-end mb-3 px-1">
-                        <h2 className="text-sm font-bold text-primary uppercase tracking-wider">
-                            Soal {currentQuestion + 1} dari {questions.length}
-                        </h2>
-                        <span className="text-xs font-medium text-text-secondary-light dark:text-text-secondary-dark">
-                            {Math.round(progress)}% Selesai
-                        </span>
-                    </div>
-                    <div className="h-3 w-full bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
-                        <div
-                            className="h-full bg-primary rounded-full transition-all duration-500 ease-out"
-                            style={{ width: `${progress}%` }}
-                        ></div>
-                    </div>
-                </section>
+            {/* Progress Bar */}
+            <div className="w-full h-1 bg-gray-200 dark:bg-gray-700">
+                <div
+                    className="h-full bg-primary transition-all duration-300"
+                    style={{ width: `${progress}%` }}
+                />
+            </div>
 
-                {/* Question Section */}
-                <section className="mb-8 md:mb-10 text-center px-2 md:px-12">
-                    <h2 className="text-2xl md:text-[32px] font-bold leading-tight md:leading-snug mb-4">
+            {/* Main Content */}
+            <main className="flex-1 flex flex-col max-w-[960px] mx-auto w-full p-4 md:p-10">
+                {/* Question */}
+                <div className="flex-1 flex flex-col justify-center py-8">
+                    <h2 className="text-xl md:text-2xl font-bold leading-tight mb-8 text-center">
                         {currentQ.question_text}
                     </h2>
-                    <p className="text-text-secondary-light dark:text-text-secondary-dark text-base md:text-lg">
-                        Pilih satu jawaban yang paling menggambarkan kondisi harian Anda.
-                    </p>
-                </section>
 
-                {/* Answers Grid */}
-                <section className="grid grid-cols-1 gap-4 md:gap-6 mb-12">
-                    {currentQ.options.map((option, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setSelectedAnswer(option.mizaj_type)}
-                            className={`group relative flex items-start gap-4 p-5 md:p-6 rounded-xl border-2 transition-all duration-200 text-left focus:outline-none focus:ring-4 focus:ring-primary/20 ${selectedAnswer === option.mizaj_type
-                                ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-lg'
-                                : 'border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 hover:shadow-lg'
-                                }`}
-                        >
-                            <div className="flex flex-col gap-1 flex-grow">
-                                <span className={`font-semibold text-base ${selectedAnswer === option.mizaj_type
-                                    ? 'text-primary'
-                                    : 'text-text-main-light dark:text-text-main-dark'
-                                    }`}>
-                                    {option.option_text}
-                                </span>
-                            </div>
-                            {selectedAnswer === option.mizaj_type && (
-                                <div className="absolute -top-2 -right-2 bg-background-light dark:bg-background-dark rounded-full">
-                                    <span className="material-symbols-outlined text-primary text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
-                                </div>
-                            )}
-                        </button>
-                    ))}
-                </section>
+                    {/* Options */}
+                    <div className="grid grid-cols-1 gap-3 max-w-2xl mx-auto w-full">
+                        {currentQ.options.map((option) => (
+                            <button
+                                key={option.id || option.mizaj_type}
+                                onClick={() => setSelectedAnswer(option.mizaj_type)}
+                                className={`p-4 rounded-xl border-2 text-left transition-all ${selectedAnswer === option.mizaj_type
+                                    ? 'border-primary bg-primary/10 text-primary font-medium'
+                                    : 'border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark hover:border-primary/50'
+                                    }`}
+                            >
+                                <span className="text-sm md:text-base">{option.option_text}</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
 
-                {/* Navigation Footer */}
-                <nav className="mt-auto pt-6 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between gap-4">
+                {/* Navigation Buttons */}
+                <div className="flex justify-between items-center pt-6 border-t border-border-light dark:border-border-dark">
                     <button
                         onClick={handlePrevious}
                         disabled={currentQuestion === 0}
-                        className="flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-text-main-light dark:hover:text-text-main-dark transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-text-secondary-light hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                     >
-                        <span className="material-symbols-outlined text-xl">arrow_back</span>
-                        <span className="hidden md:inline">Sebelumnya</span>
+                        <span className="material-symbols-outlined">arrow_back</span>
+                        Sebelumnya
                     </button>
                     <button
                         onClick={handleNext}
-                        disabled={!selectedAnswer}
-                        className="flex items-center gap-2 px-8 py-3 rounded-lg font-bold bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/30 transition-all transform active:scale-95 focus:outline-none focus:ring-4 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                        disabled={!selectedAnswer || submitting}
+                        className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white font-bold shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        <span>{currentQuestion === questions.length - 1 ? 'Lihat Hasil' : 'Selanjutnya'}</span>
-                        <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                        {submitting ? (
+                            <>
+                                <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                                Menyimpan...
+                            </>
+                        ) : currentQuestion === questions.length - 1 ? (
+                            <>
+                                Lihat Hasil
+                                <span className="material-symbols-outlined">check</span>
+                            </>
+                        ) : (
+                            <>
+                                Selanjutnya
+                                <span className="material-symbols-outlined">arrow_forward</span>
+                            </>
+                        )}
                     </button>
-                </nav>
+                </div>
             </main>
         </div>
     );
