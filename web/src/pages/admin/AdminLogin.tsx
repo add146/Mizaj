@@ -1,19 +1,25 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../lib/api';
 
 export default function AdminLogin() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        // Simulate login
-        setTimeout(() => {
-            setIsLoading(false);
+
+        try {
+            await api.login(formData.email, formData.password);
             navigate('/admin');
-        }, 1000);
+        } catch (error) {
+            console.error('Login failed:', error);
+            alert('Login failed. Please check your credentials.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
