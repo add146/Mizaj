@@ -12,6 +12,7 @@ import ParticipantDetail from './pages/admin/ParticipantDetail';
 import MizajContent from './pages/admin/MizajContent';
 import LandingEditor from './pages/admin/LandingEditor';
 import Settings from './pages/admin/Settings';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -25,15 +26,18 @@ function App() {
 
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/questions" element={<QuestionList />} />
-        <Route path="/admin/questions/new" element={<QuestionEditor />} />
-        <Route path="/admin/questions/:id" element={<QuestionEditor />} />
-        <Route path="/admin/participants" element={<ParticipantList />} />
-        <Route path="/admin/participants/:id" element={<ParticipantDetail />} />
-        <Route path="/admin/mizaj" element={<MizajContent />} />
-        <Route path="/admin/landing" element={<LandingEditor />} />
-        <Route path="/admin/settings" element={<Settings />} />
+        {/* Admin Routes - Protected */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/questions" element={<QuestionList />} />
+          <Route path="/admin/questions/new" element={<QuestionEditor />} />
+          <Route path="/admin/questions/:id" element={<QuestionEditor />} />
+          <Route path="/admin/participants" element={<ParticipantList />} />
+          <Route path="/admin/participants/:id" element={<ParticipantDetail />} />
+          <Route path="/admin/mizaj" element={<MizajContent />} />
+          <Route path="/admin/landing" element={<LandingEditor />} />
+          <Route path="/admin/settings" element={<Settings />} />
+        </Route>
       </Routes>
     </Router>
   );

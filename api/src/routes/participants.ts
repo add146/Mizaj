@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { authMiddleware } from '../middleware/auth';
 
 type Bindings = {
   DB: D1Database;
@@ -6,20 +7,7 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-// Get all participants (admin)
-app.get('/', async (c) => {
-  const { results } = await c.env.DB.prepare(`
-    SELECT p.*, m.title as mizaj_title
-    FROM participants p
-    LEFT JOIN mizaj_results m ON p.result_mizaj_type = m.mizaj_type
-    ORDER BY p.created_at DESC
-    LIMIT 100
-  `).all();
-
-  return c.json(results);
-});
-
-// Get participant by ID with full details
+// Get participant by ID with full details (Public for Result Page)
 app.get('/:id', async (c) => {
   const id = c.req.param('id');
 
@@ -66,6 +54,22 @@ app.get('/:id', async (c) => {
     mizaj_result: mizajResult,
     answers
   });
+});
+
+// Admin ONLY routes below
+app.use('*', authMiddleware);
+
+// Get all participants (admin)
+app.get('/', async (c) => {
+  const { results } = await c.env.DB.prepare(`
+    SELECT p.*, m.title as mizaj_title
+    FROM participants p
+    LEFT JOIN mizaj_results m ON p.result_mizaj_type = m.mizaj_type
+    ORDER BY p.created_at DESC
+    LIMIT 100
+  `).all();
+
+  return c.json(results);
 });
 
 // Update participant status (admin)

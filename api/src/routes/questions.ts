@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { authMiddleware } from '../middleware/auth';
 
 type Bindings = {
     DB: D1Database;
@@ -58,6 +59,9 @@ app.get('/:id', async (c) => {
 
     return c.json({ ...question, options });
 });
+
+// Admin ONLY routes below
+app.use('*', authMiddleware);
 
 // Create question (admin)
 app.post('/', async (c) => {
