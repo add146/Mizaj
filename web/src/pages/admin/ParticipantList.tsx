@@ -76,7 +76,7 @@ export default function ParticipantList() {
     };
 
     const formatDate = (timestamp: number) => {
-        return new Date(timestamp).toLocaleDateString('id-ID', {
+        return new Date(timestamp * 1000).toLocaleDateString('id-ID', {
             day: 'numeric',
             month: 'short',
             year: 'numeric',
@@ -130,16 +130,16 @@ export default function ParticipantList() {
                         <p className="mt-2 text-text-secondary-light">Peserta akan muncul setelah mengisi quiz.</p>
                     </div>
                 ) : (
-                    <div className="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark overflow-hidden">
+                    <div className="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark overflow-hidden overflow-x-auto">
                         <table className="w-full">
                             <thead className="bg-gray-50 dark:bg-gray-800/50">
                                 <tr>
-                                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light">Nama</th>
-                                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light">Usia</th>
-                                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light">Tipe Mizaj</th>
-                                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light">Tanggal</th>
-                                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light">Status</th>
-                                    <th className="text-center px-6 py-4 text-sm font-medium text-text-secondary-light">Aksi</th>
+                                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light whitespace-nowrap">Nama</th>
+                                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light whitespace-nowrap">Usia</th>
+                                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light whitespace-nowrap">Tipe Mizaj</th>
+                                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light whitespace-nowrap">Tanggal</th>
+                                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary-light whitespace-nowrap">Status</th>
+                                    <th className="text-center px-6 py-4 text-sm font-medium text-text-secondary-light whitespace-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border-light dark:divide-border-dark">
@@ -149,7 +149,7 @@ export default function ParticipantList() {
                                         onClick={() => navigate(`/admin/participants/${participant.id}`)}
                                         className="hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-colors"
                                     >
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
                                                     {participant.name.charAt(0).toUpperCase()}
@@ -157,14 +157,14 @@ export default function ParticipantList() {
                                                 <span className="font-medium text-text-main-light dark:text-text-main-dark">{participant.name}</span>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-text-secondary-light">{participant.age} th</td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 text-text-secondary-light whitespace-nowrap">{participant.age} th</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${getMizajColor(participant.result_mizaj_type)}`}>
                                                 {getMizajLabel(participant.result_mizaj_type)}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-text-secondary-light">{formatDate(participant.created_at)}</td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 text-sm text-text-secondary-light whitespace-nowrap">{formatDate(participant.created_at)}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
                                             {participant.needs_interview ? (
                                                 <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-medium">Perlu Review</span>
                                             ) : (
