@@ -117,7 +117,7 @@ export default function ParticipantList() {
                 </div>
             </header>
 
-            <main className="max-w-4xl mx-auto px-6 py-8">
+            <main className="max-w-7xl mx-auto px-6 py-8">
                 {loading ? (
                     <div className="text-center py-12">
                         <span className="material-symbols-outlined animate-spin text-4xl text-primary">progress_activity</span>
