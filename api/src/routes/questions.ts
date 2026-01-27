@@ -110,7 +110,13 @@ app.post('/', async (c) => {
     await c.env.DB.prepare(`
     INSERT INTO questions (id, question_text, order_index, is_active, shuffle_options)
     VALUES (?, ?, ?, ?, ?)
-  `).bind(id, body.question_text, body.order_index || 0, body.is_active ?? true, body.shuffle_options ?? true).run();
+  `).bind(
+        id,
+        body.question_text,
+        body.order_index || 0,
+        (body.is_active ?? true) ? 1 : 0,
+        (body.shuffle_options ?? true) ? 1 : 0
+    ).run();
 
     // Insert options
     if (body.options) {
@@ -131,16 +137,22 @@ app.put('/:id', async (c) => {
     const body = await c.req.json();
 
     await c.env.DB.prepare(`
-    UPDATE questions SET question_text = ?, order_index = ?, is_active = ?, shuffle_options = ?
+    UPDATE questions SET question_text = ?, order_index = COALESCE(?, order_index), is_active = ?, shuffle_options = ?
     WHERE id = ?
-  `).bind(body.question_text, body.order_index, body.is_active, body.shuffle_options, id).run();
+  `).bind(
+        body.question_text,
+        body.order_index === undefined ? null : body.order_index,
+        body.is_active ? 1 : 0,
+        body.shuffle_options ? 1 : 0,
+        id
+    ).run();
 
     // Update options
     if (body.options) {
         for (const opt of body.options) {
             await c.env.DB.prepare(`
-        UPDATE options SET option_text = ? WHERE id = ?
-      `).bind(opt.option_text, opt.id).run();
+        UPDATE options SET option_text = ? WHERE question_id = ? AND mizaj_type = ?
+      `).bind(opt.option_text, id, opt.mizaj_type).run();
         }
     }
 
