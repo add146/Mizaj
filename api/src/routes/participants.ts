@@ -28,7 +28,7 @@ app.get('/:id', async (c) => {
   const { results: answers } = await c.env.DB.prepare(`
     SELECT a.*, q.question_text
     FROM answers a
-    JOIN questions q ON a.question_id = q.id
+    LEFT JOIN questions q ON a.question_id = q.id
     WHERE a.participant_id = ?
   `).bind(id).all();
 
@@ -41,7 +41,7 @@ app.get('/:id', async (c) => {
   };
   for (const answer of answers) {
     // Check both potential property names to be safe, prioritizing the DB column name
-    const type = (answer.selected_mizaj || answer.selected_mizaj_type) as string;
+    const type = String(answer.selected_mizaj || answer.selected_mizaj_type || '').trim();
     if (answerCounts[type] !== undefined) {
       answerCounts[type]++;
     }

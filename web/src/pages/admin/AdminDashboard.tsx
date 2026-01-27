@@ -41,7 +41,8 @@ export default function AdminDashboard() {
             // Calculate stats
             const now = new Date();
             const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-            const todayCount = data.filter((p: Participant) => p.created_at >= startOfDay).length;
+            // DB returns seconds, JS needs milliseconds
+            const todayCount = data.filter((p: Participant) => (p.created_at * 1000) >= startOfDay).length;
             const pendingCount = data.filter((p: Participant) => p.needs_interview).length;
 
             setStats({
@@ -79,7 +80,7 @@ export default function AdminDashboard() {
     ];
 
     const formatDate = (timestamp: number) => {
-        const date = new Date(timestamp);
+        const date = new Date(timestamp * 1000 * 1000);
         const now = new Date();
         const diff = now.getTime() - date.getTime();
         const minutes = Math.floor(diff / 60000);
