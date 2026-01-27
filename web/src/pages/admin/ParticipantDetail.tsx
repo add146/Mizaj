@@ -221,13 +221,13 @@ export default function ParticipantDetail() {
                         {mizaj_result.dietary_recommendations && (
                             <div className="mb-4">
                                 <h3 className="font-medium text-text-main-light dark:text-text-main-dark mb-2">Pola Makan</h3>
-                                <div className="text-text-secondary-light prose dark:prose-invert max-w-none break-words" dangerouslySetInnerHTML={{ __html: mizaj_result.dietary_recommendations }} />
+                                <div className="text-text-secondary-light prose dark:prose-invert max-w-none break-words whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: mizaj_result.dietary_recommendations }} />
                             </div>
                         )}
                         {mizaj_result.lifestyle_recommendations && (
                             <div>
                                 <h3 className="font-medium text-text-main-light dark:text-text-main-dark mb-2">Gaya Hidup</h3>
-                                <div className="text-text-secondary-light prose dark:prose-invert max-w-none break-words" dangerouslySetInnerHTML={{ __html: mizaj_result.lifestyle_recommendations }} />
+                                <div className="text-text-secondary-light prose dark:prose-invert max-w-none break-words whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: mizaj_result.lifestyle_recommendations }} />
                             </div>
                         )}
                     </div>
