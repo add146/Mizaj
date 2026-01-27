@@ -23,6 +23,12 @@ const DEFAULTS: Record<string, string> = {
     mizaj_panas_kering_desc: 'Karakter koleris yang tegas, pemimpin, dan berambisi. Cenderung memiliki tubuh kurus berotot dan aktif.',
     mizaj_dingin_kering_image: '/dingin_kering_mountain_1769161269707.png',
     mizaj_dingin_kering_desc: 'Karakter melankolis yang pemikir, analitis, dan detail. Cenderung introspektif dan menyukai kesendirian.',
+    step_1_title: '1. Isi Kuesioner',
+    step_1_desc: 'Jawab pertanyaan sederhana tentang kondisi fisik, kebiasaan, dan preferensi Anda sehari-hari.',
+    step_2_title: '2. Analisis Instan',
+    step_2_desc: 'Sistem cerdas kami akan menganalisis jawaban Anda untuk menentukan tipe dominan Mizaj Anda.',
+    step_3_title: '3. Solusi Herbal',
+    step_3_desc: 'Dapatkan rekomendasi herbal, pola makan, dan gaya hidup yang dirancang khusus untuk Anda.',
     cta_title: 'Siap Mengetahui Keseimbangan Tubuh Anda?',
     cta_subtitle: 'Jangan biarkan ketidakseimbangan tubuh mengganggu aktivitas Anda. Mulai screening sekarang dan dapatkan solusi kesehatan yang tepat.',
     cta_button: 'MULAI SCREENING',
@@ -169,53 +175,53 @@ export default function LandingPage() {
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                         {/* Card 1: Panas Lembab */}
                         <div className="group flex flex-col overflow-hidden rounded-2xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('/panas_lembab_tropical_1769161184075.png')" }}></div>
+                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url('${c('mizaj_panas_lembab_image')}')` }}></div>
                             <div className="flex flex-1 flex-col p-6">
                                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
                                     <span className="material-symbols-outlined">wb_sunny</span>
                                 </div>
                                 <h3 className="mb-2 text-xl font-bold text-text-main-light dark:text-text-main-dark">Panas Lembab</h3>
                                 <p className="text-sm leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
-                                    Karakter sanguinis yang energik, ceria, dan sosial. Cenderung memiliki tubuh yang hangat dan kulit kemerahan.
+                                    {c('mizaj_panas_lembab_desc')}
                                 </p>
                             </div>
                         </div>
                         {/* Card 2: Dingin Lembab */}
                         <div className="group flex flex-col overflow-hidden rounded-2xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('/dingin_lembab_misty_1769161212298.png')" }}></div>
+                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url('${c('mizaj_dingin_lembab_image')}')` }}></div>
                             <div className="flex flex-1 flex-col p-6">
                                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
                                     <span className="material-symbols-outlined">water_drop</span>
                                 </div>
                                 <h3 className="mb-2 text-xl font-bold text-text-main-light dark:text-text-main-dark">Dingin Lembab</h3>
                                 <p className="text-sm leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
-                                    Karakter phlegmatis yang tenang, sabar, dan santai. Cenderung memiliki kulit pucat dan metabolisme lambat.
+                                    {c('mizaj_dingin_lembab_desc')}
                                 </p>
                             </div>
                         </div>
                         {/* Card 3: Panas Kering */}
                         <div className="group flex flex-col overflow-hidden rounded-2xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('/panas_kering_desert_1769161245061.png')" }}></div>
+                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url('${c('mizaj_panas_kering_image')}')` }}></div>
                             <div className="flex flex-1 flex-col p-6">
                                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
                                     <span className="material-symbols-outlined">local_fire_department</span>
                                 </div>
                                 <h3 className="mb-2 text-xl font-bold text-text-main-light dark:text-text-main-dark">Panas Kering</h3>
                                 <p className="text-sm leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
-                                    Karakter koleris yang tegas, pemimpin, dan berambisi. Cenderung memiliki tubuh kurus berotot dan aktif.
+                                    {c('mizaj_panas_kering_desc')}
                                 </p>
                             </div>
                         </div>
                         {/* Card 4: Dingin Kering */}
                         <div className="group flex flex-col overflow-hidden rounded-2xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: "url('/dingin_kering_mountain_1769161269707.png')" }}></div>
+                            <div className="h-48 w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url('${c('mizaj_dingin_kering_image')}')` }}></div>
                             <div className="flex flex-1 flex-col p-6">
                                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400">
                                     <span className="material-symbols-outlined">ac_unit</span>
                                 </div>
                                 <h3 className="mb-2 text-xl font-bold text-text-main-light dark:text-text-main-dark">Dingin Kering</h3>
                                 <p className="text-sm leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
-                                    Karakter melankolis yang pemikir, analitis, dan detail. Cenderung introspektif dan menyukai kesendirian.
+                                    {c('mizaj_dingin_kering_desc')}
                                 </p>
                             </div>
                         </div>
@@ -235,27 +241,27 @@ export default function LandingPage() {
                             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/20">
                                 <span className="material-symbols-outlined text-3xl">assignment</span>
                             </div>
-                            <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark">1. Isi Kuesioner</h3>
+                            <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark">{c('step_1_title')}</h3>
                             <p className="text-sm leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
-                                Jawab pertanyaan sederhana tentang kondisi fisik, kebiasaan, dan preferensi Anda sehari-hari.
+                                {c('step_1_desc')}
                             </p>
                         </div>
                         <div className="relative flex flex-col items-center gap-4 rounded-2xl bg-background-light dark:bg-background-dark p-8 text-center border border-border-light dark:border-border-dark">
                             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/20">
                                 <span className="material-symbols-outlined text-3xl">psychology</span>
                             </div>
-                            <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark">2. Analisis Instan</h3>
+                            <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark">{c('step_2_title')}</h3>
                             <p className="text-sm leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
-                                Sistem cerdas kami akan menganalisis jawaban Anda untuk menentukan tipe dominan Mizaj Anda.
+                                {c('step_2_desc')}
                             </p>
                         </div>
                         <div className="relative flex flex-col items-center gap-4 rounded-2xl bg-background-light dark:bg-background-dark p-8 text-center border border-border-light dark:border-border-dark">
                             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/20">
                                 <span className="material-symbols-outlined text-3xl">eco</span>
                             </div>
-                            <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark">3. Solusi Herbal</h3>
+                            <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark">{c('step_3_title')}</h3>
                             <p className="text-sm leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
-                                Dapatkan rekomendasi herbal, pola makan, dan gaya hidup yang dirancang khusus untuk Anda.
+                                {c('step_3_desc')}
                             </p>
                         </div>
                     </div>
@@ -267,16 +273,16 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-primary/5"></div>
                 <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 text-center relative z-10">
                     <h2 className="text-4xl font-black leading-tight text-text-main-light dark:text-text-main-dark sm:text-5xl">
-                        Siap Mengetahui Keseimbangan Tubuh Anda?
+                        {c('cta_title')}
                     </h2>
                     <p className="max-w-2xl text-lg text-text-secondary-light dark:text-text-secondary-dark">
-                        Jangan biarkan ketidakseimbangan tubuh mengganggu aktivitas Anda. Mulai screening sekarang dan dapatkan solusi kesehatan yang tepat.
+                        {c('cta_subtitle')}
                     </p>
                     <button
                         onClick={() => navigate('/screening')}
                         className="flex h-14 min-w-[200px] items-center justify-center rounded-xl bg-primary px-8 text-lg font-bold text-white shadow-xl shadow-primary/30 transition-transform hover:scale-105 hover:bg-primary/90"
                     >
-                        MULAI SCREENING
+                        {c('cta_button')}
                     </button>
                     <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark mt-4">
                         *Gratis untuk pendaftaran pertama

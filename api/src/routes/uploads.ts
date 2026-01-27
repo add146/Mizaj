@@ -30,7 +30,8 @@ app.post('/upload', async (c) => {
         });
 
         // Return public URL
-        const publicUrl = `https://assets.khibroh.com/${filename}`;
+        // Return public URL (via Worker proxy since custom domain might not be set up)
+        const publicUrl = `https://api.khibroh.workers.dev/api/uploads/${filename}`;
 
         return c.json({
             success: true,
