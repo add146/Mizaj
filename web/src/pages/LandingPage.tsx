@@ -237,7 +237,7 @@ export default function LandingPage() {
             <section className="bg-surface-light dark:bg-surface-dark py-20 px-6 lg:px-20">
                 <div className="mx-auto flex max-w-7xl flex-col items-center gap-12">
                     <div className="flex flex-col gap-4 text-center">
-                        <h2 className="text-3xl font-bold text-text-main-light dark:text-text-main-dark sm:text-4xl">Cara Kerja BioFITRA</h2>
+                        <h2 className="text-3xl font-bold text-text-main-light dark:text-text-main-dark sm:text-4xl">Cara Kerja Biofitra®</h2>
                         <p className="text-lg text-text-secondary-light dark:text-text-secondary-dark">Tiga langkah mudah menuju kesehatan alami sesuai fitrah.</p>
                     </div>
                     <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-3">
