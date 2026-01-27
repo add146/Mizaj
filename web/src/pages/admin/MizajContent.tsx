@@ -3,12 +3,32 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../lib/api';
 import type { MizajResult } from '../../lib/api';
 
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 export default function MizajContent() {
     const navigate = useNavigate();
     const [mizajTypes, setMizajTypes] = useState<MizajResult[]>([]);
     const [loading, setLoading] = useState(true);
     const [editing, setEditing] = useState<string | null>(null);
     const [editData, setEditData] = useState<Partial<MizajResult>>({});
+
+    // Quill settings
+    const modules = {
+        toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['link', 'clean']
+        ],
+    };
+
+    const formats = [
+        'header',
+        'bold', 'italic', 'underline', 'strike',
+        'list', 'bullet',
+        'link'
+    ];
 
     useEffect(() => {
         loadMizajTypes();
@@ -119,39 +139,55 @@ export default function MizajContent() {
                                         <div className="space-y-4 mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
                                             <div>
                                                 <label className="block text-sm font-medium mb-2">Deskripsi</label>
-                                                <textarea
-                                                    value={editData.description || ''}
-                                                    onChange={(e) => setEditData({ ...editData, description: e.target.value })}
-                                                    className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark outline-none focus:border-primary"
-                                                    rows={3}
-                                                />
+                                                <div className="bg-white dark:bg-surface-dark rounded-lg overflow-hidden">
+                                                    <ReactQuill
+                                                        theme="snow"
+                                                        value={editData.description || ''}
+                                                        onChange={(value) => setEditData({ ...editData, description: value })}
+                                                        modules={modules}
+                                                        formats={formats}
+                                                        className="dark:text-white"
+                                                    />
+                                                </div>
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium mb-2">Karakteristik</label>
-                                                <textarea
-                                                    value={editData.characteristics || ''}
-                                                    onChange={(e) => setEditData({ ...editData, characteristics: e.target.value })}
-                                                    className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark outline-none focus:border-primary"
-                                                    rows={3}
-                                                />
+                                                <div className="bg-white dark:bg-surface-dark rounded-lg overflow-hidden">
+                                                    <ReactQuill
+                                                        theme="snow"
+                                                        value={editData.characteristics || ''}
+                                                        onChange={(value) => setEditData({ ...editData, characteristics: value })}
+                                                        modules={modules}
+                                                        formats={formats}
+                                                        className="dark:text-white"
+                                                    />
+                                                </div>
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium mb-2">Rekomendasi Makanan</label>
-                                                <textarea
-                                                    value={editData.dietary_recommendations || ''}
-                                                    onChange={(e) => setEditData({ ...editData, dietary_recommendations: e.target.value })}
-                                                    className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark outline-none focus:border-primary"
-                                                    rows={3}
-                                                />
+                                                <div className="bg-white dark:bg-surface-dark rounded-lg overflow-hidden">
+                                                    <ReactQuill
+                                                        theme="snow"
+                                                        value={editData.dietary_recommendations || ''}
+                                                        onChange={(value) => setEditData({ ...editData, dietary_recommendations: value })}
+                                                        modules={modules}
+                                                        formats={formats}
+                                                        className="dark:text-white"
+                                                    />
+                                                </div>
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium mb-2">Rekomendasi Gaya Hidup</label>
-                                                <textarea
-                                                    value={editData.lifestyle_recommendations || ''}
-                                                    onChange={(e) => setEditData({ ...editData, lifestyle_recommendations: e.target.value })}
-                                                    className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark outline-none focus:border-primary"
-                                                    rows={3}
-                                                />
+                                                <div className="bg-white dark:bg-surface-dark rounded-lg overflow-hidden">
+                                                    <ReactQuill
+                                                        theme="snow"
+                                                        value={editData.lifestyle_recommendations || ''}
+                                                        onChange={(value) => setEditData({ ...editData, lifestyle_recommendations: value })}
+                                                        modules={modules}
+                                                        formats={formats}
+                                                        className="dark:text-white"
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="flex gap-3 mt-4">
                                                 <button
@@ -169,12 +205,28 @@ export default function MizajContent() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="space-y-3 text-sm text-text-secondary-light">
-                                            <p>{mizaj.description}</p>
+                                        <div className="space-y-4 text-sm text-text-secondary-light">
+                                            <div dangerouslySetInnerHTML={{ __html: mizaj.description }} className="prose dark:prose-invert max-w-none" />
                                             {mizaj.characteristics && (
-                                                <div className="mt-4">
-                                                    <strong className="text-text-main-light dark:text-text-main-dark">Karakteristik:</strong>
-                                                    <p>{mizaj.characteristics}</p>
+                                                <div className="mt-4 pt-4 border-t border-border-light dark:border-border-dark">
+                                                    <strong className="block text-text-main-light dark:text-text-main-dark mb-2">Karakteristik:</strong>
+                                                    <div dangerouslySetInnerHTML={{ __html: mizaj.characteristics }} className="prose dark:prose-invert max-w-none" />
+                                                </div>
+                                            )}
+                                            {(mizaj.dietary_recommendations || mizaj.lifestyle_recommendations) && (
+                                                <div className="grid md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-border-light dark:border-border-dark">
+                                                    {mizaj.dietary_recommendations && (
+                                                        <div>
+                                                            <strong className="block text-text-main-light dark:text-text-main-dark mb-2">Rekomendasi Makanan:</strong>
+                                                            <div dangerouslySetInnerHTML={{ __html: mizaj.dietary_recommendations }} className="prose dark:prose-invert max-w-none" />
+                                                        </div>
+                                                    )}
+                                                    {mizaj.lifestyle_recommendations && (
+                                                        <div>
+                                                            <strong className="block text-text-main-light dark:text-text-main-dark mb-2">Rekomendasi Gaya Hidup:</strong>
+                                                            <div dangerouslySetInnerHTML={{ __html: mizaj.lifestyle_recommendations }} className="prose dark:prose-invert max-w-none" />
+                                                        </div>
+                                                    )}
                                                 </div>
                                             )}
                                         </div>
