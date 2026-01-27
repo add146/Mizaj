@@ -159,16 +159,16 @@ export default function ParticipantList() {
                                         </td>
                                         <td className="px-6 py-4 text-text-secondary-light whitespace-nowrap">{participant.age} th</td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${getMizajColor(participant.result_mizaj_type)}`}>
+                                            <span className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getMizajColor(participant.result_mizaj_type)}`}>
                                                 {getMizajLabel(participant.result_mizaj_type)}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-sm text-text-secondary-light whitespace-nowrap">{formatDate(participant.created_at)}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             {participant.needs_interview ? (
-                                                <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-medium">Perlu Review</span>
+                                                <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-medium whitespace-nowrap">Perlu Review</span>
                                             ) : (
-                                                <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">Selesai</span>
+                                                <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium whitespace-nowrap">Selesai</span>
                                             )}
                                         </td>
                                         <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
