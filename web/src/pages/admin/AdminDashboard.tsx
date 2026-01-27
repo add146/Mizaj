@@ -80,7 +80,7 @@ export default function AdminDashboard() {
     ];
 
     const formatDate = (timestamp: number) => {
-        const date = new Date(timestamp * 1000 * 1000);
+        const date = new Date(timestamp * 1000);
         const now = new Date();
         const diff = now.getTime() - date.getTime();
         const minutes = Math.floor(diff / 60000);
