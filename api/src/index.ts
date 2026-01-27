@@ -17,7 +17,7 @@ const app = new Hono<{ Bindings: Bindings }>();
 
 // Enable CORS for frontend
 app.use('*', cors({
-	origin: ['http://localhost:5173', 'https://mizaj.pages.dev', 'https://mizaj.khibroh.com'],
+	origin: ['http://localhost:5173', 'https://mizaj.pages.dev', 'https://mizaj.khibroh.com', 'https://biofitra.id', 'https://www.biofitra.id'],
 	allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 	allowHeaders: ['Content-Type', 'Authorization'],
 }));
