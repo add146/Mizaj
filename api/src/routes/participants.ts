@@ -40,7 +40,8 @@ app.get('/:id', async (c) => {
     dingin_kering: 0
   };
   for (const answer of answers) {
-    const type = answer.selected_mizaj_type as string;
+    // Check both potential property names to be safe, prioritizing the DB column name
+    const type = (answer.selected_mizaj || answer.selected_mizaj_type) as string;
     if (answerCounts[type] !== undefined) {
       answerCounts[type]++;
     }
@@ -49,6 +50,7 @@ app.get('/:id', async (c) => {
   return c.json({
     participant: {
       ...participant,
+      needs_interview: !!participant.needs_interview,
       answer_counts: answerCounts
     },
     mizaj_result: mizajResult,

@@ -162,7 +162,7 @@ export default function ParticipantDetail() {
                             <p className="text-text-secondary-light">{mizaj_result.mizaj_type}</p>
                         </div>
                     </div>
-                    <div className="text-text-secondary-light mb-4 prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: mizaj_result.description }} />
+                    <div className="text-text-secondary-light mb-4 prose dark:prose-invert max-w-none break-words" dangerouslySetInnerHTML={{ __html: mizaj_result.description }} />
 
                     {participant.needs_interview && (
                         <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
@@ -221,13 +221,13 @@ export default function ParticipantDetail() {
                         {mizaj_result.dietary_recommendations && (
                             <div className="mb-4">
                                 <h3 className="font-medium text-text-main-light dark:text-text-main-dark mb-2">Pola Makan</h3>
-                                <div className="text-text-secondary-light prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: mizaj_result.dietary_recommendations }} />
+                                <div className="text-text-secondary-light prose dark:prose-invert max-w-none break-words" dangerouslySetInnerHTML={{ __html: mizaj_result.dietary_recommendations }} />
                             </div>
                         )}
                         {mizaj_result.lifestyle_recommendations && (
                             <div>
                                 <h3 className="font-medium text-text-main-light dark:text-text-main-dark mb-2">Gaya Hidup</h3>
-                                <div className="text-text-secondary-light prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: mizaj_result.lifestyle_recommendations }} />
+                                <div className="text-text-secondary-light prose dark:prose-invert max-w-none break-words" dangerouslySetInnerHTML={{ __html: mizaj_result.lifestyle_recommendations }} />
                             </div>
                         )}
                     </div>
