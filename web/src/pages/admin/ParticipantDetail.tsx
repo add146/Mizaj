@@ -162,7 +162,14 @@ export default function ParticipantDetail() {
                             <p className="text-text-secondary-light">{mizaj_result.mizaj_type}</p>
                         </div>
                     </div>
-                    <div className="text-text-secondary-light mb-4 prose dark:prose-invert max-w-none break-words" dangerouslySetInnerHTML={{ __html: mizaj_result.description }} />
+                    <div className="text-text-secondary-light mb-4 prose dark:prose-invert max-w-none break-words whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: mizaj_result.description }} />
+
+                    {mizaj_result.characteristics && (
+                        <div className="mb-4 pt-4 border-t border-border-light dark:border-border-dark">
+                            <h3 className="font-bold text-lg text-text-main-light dark:text-text-main-dark mb-2">Karakteristik</h3>
+                            <div className="text-text-secondary-light prose dark:prose-invert max-w-none break-words whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: mizaj_result.characteristics }} />
+                        </div>
+                    )}
 
                     {participant.needs_interview && (
                         <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
