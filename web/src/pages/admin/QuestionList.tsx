@@ -7,6 +7,7 @@ interface Question {
     question_text: string;
     order_index: number;
     is_active: boolean;
+    shuffle_options: boolean;
     options: any[];
 }
 
@@ -21,7 +22,7 @@ export default function QuestionList() {
 
     const loadQuestions = async () => {
         try {
-            const data = await api.getQuestions();
+            const data = await api.getAdminQuestions();
             setQuestions(data);
         } catch (error) {
             console.error('Failed to load questions:', error);
@@ -98,11 +99,17 @@ export default function QuestionList() {
                                         <div className="flex items-center gap-4 text-sm text-text-secondary-light">
                                             <span>{question.options?.length || 4} opsi</span>
                                             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${question.is_active
-                                                    ? 'bg-green-100 text-green-700'
-                                                    : 'bg-gray-100 text-gray-600'
+                                                ? 'bg-green-100 text-green-700'
+                                                : 'bg-gray-100 text-gray-600'
                                                 }`}>
                                                 {question.is_active ? 'Aktif' : 'Nonaktif'}
                                             </span>
+                                            {question.shuffle_options && (
+                                                <span className="flex items-center gap-1 text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-medium">
+                                                    <span className="material-symbols-outlined text-[14px]">shuffle</span>
+                                                    Acak
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">

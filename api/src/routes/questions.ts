@@ -10,7 +10,7 @@ const app = new Hono<{ Bindings: Bindings }>();
 // Get all active questions with options
 app.get('/', async (c) => {
     const { results } = await c.env.DB.prepare(`
-    SELECT q.id, q.question_text, q.order_index, q.shuffle_options,
+    SELECT q.id, q.question_text, q.order_index, q.shuffle_options, q.is_active,
            o.id as option_id, o.mizaj_type, o.option_text
     FROM questions q
     LEFT JOIN options o ON q.id = o.question_id
@@ -27,6 +27,45 @@ app.get('/', async (c) => {
                 question_text: row.question_text,
                 order_index: row.order_index,
                 shuffle_options: row.shuffle_options,
+                is_active: !!row.is_active,
+                options: []
+            });
+        }
+        if (row.option_id) {
+            questionsMap.get(row.id).options.push({
+                id: row.option_id,
+                mizaj_type: row.mizaj_type,
+                option_text: row.option_text
+            });
+        }
+    }
+
+    return c.json(Array.from(questionsMap.values()));
+});
+
+// Admin ONLY routes below
+app.use('*', authMiddleware);
+
+// Get ALL questions (admin) including inactive
+app.get('/all', async (c) => {
+    const { results } = await c.env.DB.prepare(`
+    SELECT q.id, q.question_text, q.order_index, q.shuffle_options, q.is_active,
+           o.id as option_id, o.mizaj_type, o.option_text
+    FROM questions q
+    LEFT JOIN options o ON q.id = o.question_id
+    ORDER BY q.order_index, o.mizaj_type
+  `).all();
+
+    // Group options by question
+    const questionsMap = new Map();
+    for (const row of results) {
+        if (!questionsMap.has(row.id)) {
+            questionsMap.set(row.id, {
+                id: row.id,
+                question_text: row.question_text,
+                order_index: row.order_index,
+                shuffle_options: row.shuffle_options,
+                is_active: !!row.is_active,
                 options: []
             });
         }

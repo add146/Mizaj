@@ -110,6 +110,10 @@ class ApiClient {
         return this.request<Question[]>('/api/questions');
     }
 
+    async getAdminQuestions(): Promise<Question[]> {
+        return this.request<Question[]>('/api/questions/all');
+    }
+
     async getQuestion(id: string): Promise<Question> {
         return this.request<Question>(`/api/questions/${id}`);
     }
