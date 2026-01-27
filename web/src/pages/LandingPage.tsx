@@ -100,7 +100,11 @@ export default function LandingPage() {
                             <span>{c('hero_badge')}</span>
                         </div>
                         <h1 className="text-4xl font-black leading-tight tracking-tight text-text-main-light dark:text-text-main-dark sm:text-5xl lg:text-6xl">
-                            {c('hero_title').split('Fitrah')[0]}<span className="text-primary">Fitrah</span>{c('hero_title').split('Fitrah')[1] || ' Sejak Lahir'}
+                            {c('hero_title').split(/(Fitrah)/i).map((part, i) =>
+                                part.toLowerCase() === 'fitrah' ?
+                                    <span key={i} className="text-primary">{part}</span> :
+                                    <span key={i}>{part}</span>
+                            )}
                         </h1>
                         <p className="text-lg font-normal leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
                             {c('hero_subtitle')}
