@@ -151,7 +151,7 @@ export default function MizajContent() {
                                                 </div>
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium mb-2">Karakteristik</label>
+                                                <label className="block text-sm font-medium mb-2">Karakter Kepribadian</label>
                                                 <div className="bg-white dark:bg-surface-dark rounded-lg overflow-hidden">
                                                     <ReactQuill
                                                         theme="snow"
@@ -164,7 +164,7 @@ export default function MizajContent() {
                                                 </div>
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium mb-2">Rekomendasi Makanan</label>
+                                                <label className="block text-sm font-medium mb-2">Karakter Tubuh</label>
                                                 <div className="bg-white dark:bg-surface-dark rounded-lg overflow-hidden">
                                                     <ReactQuill
                                                         theme="snow"
@@ -209,7 +209,7 @@ export default function MizajContent() {
                                             <div dangerouslySetInnerHTML={{ __html: mizaj.description }} className="prose dark:prose-invert max-w-none" />
                                             {mizaj.characteristics && (
                                                 <div className="mt-4 pt-4 border-t border-border-light dark:border-border-dark">
-                                                    <strong className="block text-text-main-light dark:text-text-main-dark mb-2">Karakteristik:</strong>
+                                                    <strong className="block text-text-main-light dark:text-text-main-dark mb-2">Karakter Kepribadian:</strong>
                                                     <div dangerouslySetInnerHTML={{ __html: mizaj.characteristics }} className="prose dark:prose-invert max-w-none" />
                                                 </div>
                                             )}
@@ -217,7 +217,7 @@ export default function MizajContent() {
                                                 <div className="grid md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-border-light dark:border-border-dark">
                                                     {mizaj.dietary_recommendations && (
                                                         <div>
-                                                            <strong className="block text-text-main-light dark:text-text-main-dark mb-2">Rekomendasi Makanan:</strong>
+                                                            <strong className="block text-text-main-light dark:text-text-main-dark mb-2">Karakter Tubuh:</strong>
                                                             <div dangerouslySetInnerHTML={{ __html: mizaj.dietary_recommendations }} className="prose dark:prose-invert max-w-none" />
                                                         </div>
                                                     )}

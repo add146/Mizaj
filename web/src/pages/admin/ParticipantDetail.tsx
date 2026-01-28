@@ -166,7 +166,7 @@ export default function ParticipantDetail() {
 
                     {mizaj_result.characteristics && (
                         <div className="mb-4 pt-4 border-t border-border-light dark:border-border-dark">
-                            <h3 className="font-bold text-lg text-text-main-light dark:text-text-main-dark mb-2">Karakteristik</h3>
+                            <h3 className="font-bold text-lg text-text-main-light dark:text-text-main-dark mb-2">Karakter Kepribadian</h3>
                             <div className="text-text-secondary-light prose dark:prose-invert max-w-none break-words whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.characteristics }} />
                         </div>
                     )}
@@ -227,7 +227,7 @@ export default function ParticipantDetail() {
                         </h2>
                         {mizaj_result.dietary_recommendations && (
                             <div className="mb-4">
-                                <h3 className="font-medium text-text-main-light dark:text-text-main-dark mb-2">Pola Makan</h3>
+                                <h3 className="font-medium text-text-main-light dark:text-text-main-dark mb-2">Karakter Tubuh</h3>
                                 <div className="text-text-secondary-light prose dark:prose-invert max-w-none break-words whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.dietary_recommendations }} />
                             </div>
                         )}
