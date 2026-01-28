@@ -146,13 +146,13 @@ export default function ResultPage() {
                         <div className="w-32 h-32 sm:w-40 sm:h-40 shrink-0 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-xl border-4 border-white dark:border-gray-700">
                             <span className={`material-symbols-outlined ${config.color} text-[64px]`}>{config.icon}</span>
                         </div>
-                        <div className="flex flex-col gap-3 text-center sm:text-left">
+                        <div className="flex flex-col gap-3 text-center sm:text-left w-full min-w-0">
                             <span className={`inline-block self-center sm:self-start bg-primary text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-md`}>
                                 Tipe Dominan
                             </span>
-                            <h2 className="text-2xl sm:text-3xl font-black">
+                            <h2 className="text-2xl sm:text-3xl font-black break-words leading-tight">
                                 {mizaj_result.title.toUpperCase()}
-                                <span className="block text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-400 mt-1">
+                                <span className="block text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-400 mt-1 break-words">
                                     ({mizaj_result.mizaj_type.replace('_', ' ')})
                                 </span>
                             </h2>
