@@ -116,7 +116,7 @@ export default function ResultPage() {
                         <div className="size-8 text-primary flex items-center justify-center">
                             <span className="material-symbols-outlined text-3xl">spa</span>
                         </div>
-                        <h1 className="text-lg font-bold leading-tight tracking-tight">BioFITRA</h1>
+                        <h1 className="text-lg font-bold leading-tight tracking-tight">Biofitra®</h1>
                     </div>
                     <button
                         onClick={() => navigate('/')}
@@ -156,9 +156,7 @@ export default function ResultPage() {
                                     ({mizaj_result.mizaj_type.replace('_', ' ')})
                                 </span>
                             </h2>
-                            <p className="text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed">
-                                {mizaj_result.description}
-                            </p>
+                            <div className="text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed prose dark:prose-invert max-w-none break-words whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.description }} />
                         </div>
                     </div>
                 </div>
@@ -207,63 +205,64 @@ export default function ResultPage() {
 
                     {mizaj_result.lifestyle_recommendations && (
                         <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 rounded-xl p-6 border border-blue-200 dark:border-blue-800/50">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-                                <span className="material-symbols-outlined">self_improvement</span>
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                                    <span className="material-symbols-outlined">self_improvement</span>
+                                </div>
+                                <h3 className="text-lg font-bold">Rekomendasi Gaya Hidup</h3>
                             </div>
-                            <h3 className="text-lg font-bold">Rekomendasi Gaya Hidup</h3>
+                            <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none break-words whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.lifestyle_recommendations }} />
                         </div>
-                        <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none break-words whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.lifestyle_recommendations }} />
-                    </div>
-                )}
-        </div>
+                    )}
+                </div>
 
-                {/* CTA Section */ }
-    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center py-6">
-        <button
-            onClick={() => navigate('/screening')}
-            className="flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all"
-        >
-            <span className="material-symbols-outlined">refresh</span>
-            Screening Ulang
-        </button>
-        <button
-            onClick={() => {
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'Hasil Screening Mizaj BioFITRA',
-                        text: `Tipe Mizaj saya: ${mizaj_result.title}`,
-                        url: window.location.href
-                    });
-                }
-            }}
-            className="flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary/10 transition-all"
-        >
-            <span className="material-symbols-outlined">share</span>
-            Bagikan Hasil
-        </button>
-        <a
-            href={`https://wa.me/${contact || '628123456789'}?text=${encodeURIComponent(
-                `Halo, saya ingin konsultasi mengenai hasil Mizaj saya.\n\n` +
-                `Nama: ${participant.name}\n` +
-                `Usia: ${participant.age} tahun\n` +
-                `Tipe Mizaj: ${mizaj_result.title} (${mizaj_result.mizaj_type})\n\n` +
-                `Link Hasil: ${window.location.origin}/result/${participant.id}`
-            )}`}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 px-8 py-4 rounded-xl bg-green-500 text-white font-bold shadow-lg shadow-green-500/30 hover:bg-green-600 transition-all"
-        >
-            <span className="material-symbols-outlined">chat</span>
-            Konsultasi
-        </a>
-    </div>
+                {/* CTA Section */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center py-6">
+                    <button
+                        onClick={() => navigate('/screening')}
+                        className="flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all"
+                    >
+                        <span className="material-symbols-outlined">refresh</span>
+                        Screening Ulang
+                    </button>
+                    <button
+                        onClick={() => {
+                            if (navigator.share) {
+                                navigator.share({
+                                    title: 'Hasil Screening Mizaj Biofitra®',
+                                    text: `Tipe Mizaj saya: ${mizaj_result.title}`,
+                                    url: window.location.href
+                                });
+                            }
+                        }}
+                        className="flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary/10 transition-all"
+                    >
+                        <span className="material-symbols-outlined">share</span>
+                        Bagikan Hasil
+                    </button>
+                    <a
+                        href={`https://wa.me/${contact || '628123456789'}?text=${encodeURIComponent(
+                            `Halo, saya ingin konsultasi mengenai hasil Mizaj saya.\n\n` +
+                            `Nama: ${participant.name}\n` +
+                            `Usia: ${participant.age} tahun\n` +
+                            `Tipe Mizaj: ${mizaj_result.title} (${mizaj_result.mizaj_type})\n\n` +
+                            `Link Hasil: ${window.location.origin}/result/${participant.id}`
+                        )}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 px-8 py-4 rounded-xl bg-green-500 text-white font-bold shadow-lg shadow-green-500/30 hover:bg-green-600 transition-all"
+                    >
+                        <span className="material-symbols-outlined">chat</span>
+                        Konsultasi
+                    </a>
+                </div>
 
-    {/* Disclaimer */ }
-    <div className="text-center border-t border-border-light dark:border-border-dark pt-6 pb-10">
-        <p className="text-xs text-gray-400 dark:text-gray-500 max-w-3xl mx-auto">
-            <strong>Disclaimer:</strong> Hasil screening ini didasarkan pada prinsip pengobatan tradisional Unani/Mizaj dan ditujukan untuk tujuan edukasi serta pengenalan diri. Hasil ini bukan merupakan diagnosis medis profesional. Konsultasikan dengan praktisi kesehatan untuk saran medis yang akurat.
-        </p>
-    </div>
+                {/* Disclaimer */}
+                <div className="text-center border-t border-border-light dark:border-border-dark pt-6 pb-10">
+                    <p className="text-xs text-gray-400 dark:text-gray-500 max-w-3xl mx-auto">
+                        <strong>Disclaimer:</strong> Hasil screening ini didasarkan pada prinsip pengobatan tradisional Unani/Mizaj dan ditujukan untuk tujuan edukasi serta pengenalan diri. Hasil ini bukan merupakan diagnosis medis profesional. Konsultasikan dengan praktisi kesehatan untuk saran medis yang akurat.
+                    </p>
+                </div>
             </main >
         </div >
     );
