@@ -76,6 +76,16 @@ export default function ResultPage() {
         return configs[type] || configs['panas_lembab'];
     };
 
+    const getMizajColor = (type: string) => {
+        const colors: Record<string, string> = {
+            panas_lembab: 'bg-orange-100 text-orange-600',
+            dingin_lembab: 'bg-blue-100 text-blue-600',
+            panas_kering: 'bg-red-100 text-red-600',
+            dingin_kering: 'bg-gray-100 text-gray-600'
+        };
+        return colors[type] || 'bg-gray-100 text-gray-600';
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
@@ -150,13 +160,13 @@ export default function ResultPage() {
                             <span className={`inline-block self-center sm:self-start bg-primary text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-md`}>
                                 Tipe Dominan
                             </span>
-                            <h2 className="text-2xl sm:text-3xl font-black break-words leading-tight">
+                            <h2 className="text-2xl sm:text-3xl font-black leading-tight">
                                 {mizaj_result.title.toUpperCase()}
-                                <span className="block text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-400 mt-1 break-words">
+                                <span className="block text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-400 mt-1">
                                     ({mizaj_result.mizaj_type.replace('_', ' ')})
                                 </span>
                             </h2>
-                            <div className="text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed prose dark:prose-invert max-w-none break-words whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.description }} />
+                            <div className="text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed prose dark:prose-invert max-w-none whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.description }} />
                         </div>
                     </div>
                 </div>
@@ -185,9 +195,43 @@ export default function ResultPage() {
                             </div>
                             <h3 className="text-lg font-bold">Karakteristik</h3>
                         </div>
-                        <div className="text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none break-words whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.characteristics }} />
+                        <div className="text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.characteristics }} />
                     </div>
                 )}
+
+                {/* Answer Distribution */}
+                <div className="bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-border-light dark:border-border-dark">
+                    <h2 className="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-4 flex items-center gap-2">
+                        <span className="material-symbols-outlined text-primary">bar_chart</span>
+                        Distribusi Jawaban
+                    </h2>
+                    <div className="space-y-3">
+                        {Object.entries(participant.answer_counts).map(([type, count]) => {
+                            const total = Object.values(participant.answer_counts).reduce((a: number, b: number) => a + b, 0);
+                            const percentage = Math.round((count / total) * 100);
+
+                            return (
+                                <div key={type}>
+                                    <div className="flex items-center justify-between mb-1">
+                                        <span className="text-sm font-medium text-text-main-light dark:text-text-main-dark">
+                                            {type === 'panas_lembab' ? 'Panas Lembab' :
+                                                type === 'dingin_lembab' ? 'Dingin Lembab' :
+                                                    type === 'panas_kering' ? 'Panas Kering' :
+                                                        'Dingin Kering'}
+                                        </span>
+                                        <span className="text-sm text-text-secondary-light">{count} jawaban ({percentage}%)</span>
+                                    </div>
+                                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div
+                                            className={`h-full ${getMizajColor(type).split(' ')[0]}`}
+                                            style={{ width: `${percentage}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
 
                 {/* Recommendations Section */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -199,7 +243,7 @@ export default function ResultPage() {
                                 </div>
                                 <h3 className="text-lg font-bold">Rekomendasi Pola Makan</h3>
                             </div>
-                            <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none break-words whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.dietary_recommendations }} />
+                            <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.dietary_recommendations }} />
                         </div>
                     )}
 
@@ -211,7 +255,7 @@ export default function ResultPage() {
                                 </div>
                                 <h3 className="text-lg font-bold">Rekomendasi Gaya Hidup</h3>
                             </div>
-                            <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none break-words whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.lifestyle_recommendations }} />
+                            <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.lifestyle_recommendations }} />
                         </div>
                     )}
                 </div>
