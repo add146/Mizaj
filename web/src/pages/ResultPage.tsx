@@ -166,7 +166,7 @@ export default function ResultPage() {
                                     ({mizaj_result.mizaj_type.replace('_', ' ')})
                                 </span>
                             </h2>
-                            <div className="text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed prose dark:prose-invert max-w-none whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.description }} />
+                            <div className="text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed prose dark:prose-invert max-w-none break-words [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.description }} />
                         </div>
                     </div>
                 </div>
@@ -195,7 +195,7 @@ export default function ResultPage() {
                             </div>
                             <h3 className="text-lg font-bold">Karakteristik</h3>
                         </div>
-                        <div className="text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.characteristics }} />
+                        <div className="text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none break-words [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.characteristics }} />
                     </div>
                 )}
 
@@ -243,7 +243,7 @@ export default function ResultPage() {
                                 </div>
                                 <h3 className="text-lg font-bold">Rekomendasi Pola Makan</h3>
                             </div>
-                            <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.dietary_recommendations }} />
+                            <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none break-words [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.dietary_recommendations }} />
                         </div>
                     )}
 
@@ -255,7 +255,7 @@ export default function ResultPage() {
                                 </div>
                                 <h3 className="text-lg font-bold">Rekomendasi Gaya Hidup</h3>
                             </div>
-                            <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.lifestyle_recommendations }} />
+                            <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark prose dark:prose-invert max-w-none break-words [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3" dangerouslySetInnerHTML={{ __html: mizaj_result.lifestyle_recommendations }} />
                         </div>
                     )}
                 </div>
